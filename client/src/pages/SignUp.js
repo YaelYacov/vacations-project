@@ -35,7 +35,7 @@ class SignUp extends Component {
 
   onSubmit = () => {
     if (this.currentUser.name == "" || this.currentUser.password == "" || this.currentUser.mail == "") {
-      return alert("please please fill all the fields below");
+      return alert("please please fill all the fields below go f** yourself");
     } else this.insertNewUser();
   };
 
