@@ -39,7 +39,7 @@ class PasswordField extends Component {
 
   onSubmitFn = () => {
     if (this.currentUser.password == "" || this.currentUser.mail == "") {
-      return alert("please please fill all the fields below ");
+      return alert("please please fill all the fields below");
     } else this.isLoggedIn();
   };
 
