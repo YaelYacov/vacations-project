@@ -5,8 +5,6 @@ import LogIn from "../component/logIn";
 import VacationInfo from "../component/vacationInfo";
 import UploadImg from "../component/uploadImg";
 
-// orderBy
-
 class PasswordField extends Component {
   componentDidMount = () => {};
 

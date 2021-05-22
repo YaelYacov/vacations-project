@@ -13,7 +13,7 @@ class VacationsInfo extends Component {
     id: 0,
     destination: "",
     description: "",
-    img: "http://www.localhost:5292/Rome.jpg",
+    img: "",
     initialDate: "",
     finalDate: "",
     price: 0,
@@ -28,12 +28,48 @@ class VacationsInfo extends Component {
     this.props.isLoggedIn ? this.props.updateIsLoggedIn(false) : this.props.updateIsRegistered(false);
   };
 
-  onChangeFn = (e, defaultValue) => {
-    this.currentVacation[e.target.id] = e.target.value;
+  onChangeFn = (e, currentVac) => {
+    //     id: 0,
+    // destination: "",
+    // description: "",
+    // img: "http://www.localhost:5292/Rome.jpg",
+    // initialDate: "",
+    // finalDate: "",
+    // price: 0,
+    let currentVacation = this.currentVacation;
 
-    console.log(this.currentVacation);
+    currentVacation.id = currentVac.id;
+
+    let thisCurrentVac = this.props.vacations.find((vacation) => vacation.id == currentVac.id);
+
+    console.log(thisCurrentVac);
+
+    currentVacation[e.target.id] = e.target.value;
+    if (currentVacation.destination != thisCurrentVac.destination) {
+      return (currentVacation.destination = thisCurrentVac.destination);
+    }
+    if (currentVacation.description == "") {
+      return (currentVacation.description = thisCurrentVac.description);
+    }
+    if (currentVacation.initialDate == "") {
+      return (currentVacation.initialDate = thisCurrentVac.initialDate);
+    }
+    if (currentVacation.finalDate == "") {
+      return (currentVacation.finalDate = thisCurrentVac.finalDate);
+    }
+    if (currentVacation.price == "") {
+      return (currentVacation.price = thisCurrentVac.price);
+    }
+    console.log(currentVacation);
 
     // this.currentVacation.destination == ""  ? this.currentVacation.destination = default
+  };
+
+  updateVac = async (vacationOb) => {
+    let currentVacation = this.currentVacation;
+
+    let updateVacation = await Api.postRequest(`/vacations/updateVacation`, currentVacation);
+    console.log(updateVacation);
   };
 
   onClickFn = (vacationId) => {
@@ -44,16 +80,6 @@ class VacationsInfo extends Component {
   removeVac = async (id) => {
     let updateDeleteVacation = await Api.postRequest(`/vacations/updateDeleteVacation`, { id: id });
     this.getData();
-  };
-
-  updateVac = async (id, vacationOb) => {
-    this.currentVacation.id = id;
-    console.log(vacationOb);
-
-    console.log(this.currentVacation.values());
-    // let updateVacation = await Api.postRequest(`/vacations/updateVacation`, this.currentVacation);
-    // console.log(updateVacation, this.currentVacation);
-    // this.getData();
   };
 
   render() {
