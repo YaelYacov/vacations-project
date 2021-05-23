@@ -17,10 +17,7 @@ class PasswordField extends Component {
     id: 0,
   };
 
-  onChangeFn = (e) => {
-    this.currentUser[e.target.id] = e.target.value;
-    console.log(e.target.value, e.target.id, this.currentUser);
-  };
+  onChangeFn = (e) => (this.currentUser[e.target.id] = e.target.value);
 
   loggedInSuccess = (getUserByMail) => {
     this.props.updateUsers([...getUserByMail.data]);
@@ -42,16 +39,19 @@ class PasswordField extends Component {
   };
 
   render() {
-    let isLoggedIn = !this.props.isLoggedIn ? (
-      <LogIn onSubmitFn={this.onSubmitFn} onChangeFn={this.onChangeFn}></LogIn>
-    ) : (
-      <div>
-        <div className="row">
-          <VacationInfo></VacationInfo>
-        </div>
+    return (
+      <div className="container">
+        {!this.props.isLoggedIn ? (
+          <LogIn onSubmitFn={this.onSubmitFn} onChangeFn={this.onChangeFn}></LogIn>
+        ) : (
+          <div>
+            <div className="row">
+              <VacationInfo></VacationInfo>
+            </div>
+          </div>
+        )}
       </div>
     );
-    return <div className="container">{isLoggedIn}</div>;
   }
 }
 const mapStateToProps = (state) => {

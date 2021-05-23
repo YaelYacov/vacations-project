@@ -2,10 +2,10 @@ import React, { Component } from "react";
 import * as Api from "../api/apiCalls";
 import { connect } from "react-redux";
 import VacationCards from "../component/vacationCards";
+import VacationFrom from "../component/vacationForm";
 
 class VacationsInfo extends Component {
   componentDidMount() {
-    console.log(this.props.users);
     this.getData();
   }
 
@@ -29,51 +29,50 @@ class VacationsInfo extends Component {
   };
 
   onChangeFn = (e, currentVac) => {
-    //     id: 0,
-    // destination: "",
-    // description: "",
-    // img: "http://www.localhost:5292/Rome.jpg",
-    // initialDate: "",
-    // finalDate: "",
-    // price: 0,
     let currentVacation = this.currentVacation;
-
-    currentVacation.id = currentVac.id;
-
     let thisCurrentVac = this.props.vacations.find((vacation) => vacation.id == currentVac.id);
-
-    console.log(thisCurrentVac);
-
+    currentVacation.id = thisCurrentVac.id;
     currentVacation[e.target.id] = e.target.value;
-    if (currentVacation.destination != thisCurrentVac.destination) {
-      return (currentVacation.destination = thisCurrentVac.destination);
-    }
-    if (currentVacation.description == "") {
-      return (currentVacation.description = thisCurrentVac.description);
-    }
-    if (currentVacation.initialDate == "") {
-      return (currentVacation.initialDate = thisCurrentVac.initialDate);
-    }
-    if (currentVacation.finalDate == "") {
-      return (currentVacation.finalDate = thisCurrentVac.finalDate);
-    }
-    if (currentVacation.price == "") {
-      return (currentVacation.price = thisCurrentVac.price);
-    }
-    console.log(currentVacation);
 
-    // this.currentVacation.destination == ""  ? this.currentVacation.destination = default
+    if (!currentVacation.destination) {
+      currentVacation.destination = thisCurrentVac.destination;
+    }
+    if (!currentVacation.description) {
+      currentVacation.description = thisCurrentVac.description;
+    }
+    if (!currentVacation.initialDate) {
+      currentVacation.initialDate = thisCurrentVac.initialDate;
+    }
+    if (!currentVacation.finalDate) {
+      currentVacation.finalDate = thisCurrentVac.finalDate;
+    }
+    if (!currentVacation.price) {
+      currentVacation.price = thisCurrentVac.price;
+    }
+    if (!currentVacation.img) {
+      currentVacation.img = thisCurrentVac.img;
+    }
   };
 
   updateVac = async (vacationOb) => {
-    let currentVacation = this.currentVacation;
-
-    let updateVacation = await Api.postRequest(`/vacations/updateVacation`, currentVacation);
-    console.log(updateVacation);
+    // console.log("vacationOb: ", vacationOb, " currentVacation:", this.currentVacation);
+    let updateVacation = await Api.postRequest(`/vacations/updateVacation`, this.currentVacation);
+    if (updateVacation.data[0] == 1) {
+      this.getData();
+      alert(`Updating Vacation id : ${this.currentVacation.id} success`);
+      this.currentVacation.id = 0;
+      this.currentVacation.destination = "";
+      this.currentVacation.description = "";
+      this.currentVacation.initialDate = "";
+      this.currentVacation.finalDate = "";
+      this.currentVacation.price = 0;
+      this.currentVacation.img = "";
+    } else {
+      alert(`Something Went Wrong`);
+    }
   };
 
   onClickFn = (vacationId) => {
-    // let favoriteVac =
     console.log(vacationId);
   };
 
@@ -82,8 +81,31 @@ class VacationsInfo extends Component {
     this.getData();
   };
 
+  addNewVac = async () => {
+    console.log("add new");
+    // let addNewVacation = await Api.postRequest(`/vacations/addNewVacation`, {
+    //   destination: this.currentVacation.destination,
+    //   description: this.currentVacation.description,
+    //   initialDate: this.currentVacation.initialDate,
+    //   finalDate: this.currentVacation.finalDate,
+    //   price: this.currentVacation.price,
+    //   img: this.currentVacation.img,
+    // });
+    // this.getData();
+  };
+
   render() {
     let isLoggedIn = this.props.isLoggedIn ? "Log In" : "Sign Up";
+    let isAdmin =
+      this.props.users[0].isAdmin == 0 ? (
+        ""
+      ) : (
+        <div>
+          <button className="btn btn-primary m-3" onClick={() => this.addNewVac()}>
+            Add New Vacation
+          </button>
+        </div>
+      );
     return (
       <div>
         <div className="row ">
@@ -99,11 +121,19 @@ class VacationsInfo extends Component {
         </div>
 
         <div className="row p-3">
-          {this.props.vacations.map((vacation) => (
-            <div className="p-3 col-xl-3 col-md-6 col-sm-6">
-              <VacationCards isAdmin={this.props.users[0].isAdmin} onClickFn={this.onClickFn} vacation={vacation} removeVac={this.removeVac} onChangeFn={this.onChangeFn} updateVac={this.updateVac}></VacationCards>
-            </div>
-          ))}
+          {this.props.vacations.map((vacation) => {
+            return (
+              <div className="p-3 col-xl-3 col-md-6 col-sm-6">
+                {this.props.users[0].isAdmin == 0 ? (
+                  <VacationCards onClickFn={this.onClickFn} vacation={vacation}></VacationCards>
+                ) : (
+                  <div>
+                    <VacationFrom vacation={vacation} onChangeFn={this.onChangeFn} updateVac={this.updateVac} removeVac={this.removeVac}></VacationFrom>
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
       </div>
     );
