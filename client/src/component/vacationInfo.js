@@ -8,6 +8,7 @@ class VacationsInfo extends Component {
   componentDidMount() {
     this.getData();
   }
+  AddNewVac = false;
 
   currentVacation = {
     id: 0,
@@ -24,33 +25,35 @@ class VacationsInfo extends Component {
     this.props.updateVacations([...getAllVacations.data]);
   };
 
-  backToSignUp = () => {
-    this.props.isLoggedIn ? this.props.updateIsLoggedIn(false) : this.props.updateIsRegistered(false);
-  };
+  backToSignUp = () => (this.props.isLoggedIn ? this.props.updateIsLoggedIn(false) : this.props.updateIsRegistered(false));
 
-  onChangeFn = (e, currentVac) => {
+  onChangeFn = (e, currentVac, type) => {
     let currentVacation = this.currentVacation;
-    let thisCurrentVac = this.props.vacations.find((vacation) => vacation.id == currentVac.id);
-    currentVacation.id = thisCurrentVac.id;
-    currentVacation[e.target.id] = e.target.value;
+    if (type == 1) {
+      let thisCurrentVac = this.props.vacations.find((vacation) => vacation.id == currentVac.id);
+      currentVacation.id = thisCurrentVac.id;
+      currentVacation[e.target.id] = e.target.value;
 
-    if (!currentVacation.destination) {
-      currentVacation.destination = thisCurrentVac.destination;
-    }
-    if (!currentVacation.description) {
-      currentVacation.description = thisCurrentVac.description;
-    }
-    if (!currentVacation.initialDate) {
-      currentVacation.initialDate = thisCurrentVac.initialDate;
-    }
-    if (!currentVacation.finalDate) {
-      currentVacation.finalDate = thisCurrentVac.finalDate;
-    }
-    if (!currentVacation.price) {
-      currentVacation.price = thisCurrentVac.price;
-    }
-    if (!currentVacation.img) {
-      currentVacation.img = thisCurrentVac.img;
+      if (!currentVacation.destination) {
+        currentVacation.destination = thisCurrentVac.destination;
+      }
+      if (!currentVacation.description) {
+        currentVacation.description = thisCurrentVac.description;
+      }
+      if (!currentVacation.initialDate) {
+        currentVacation.initialDate = thisCurrentVac.initialDate;
+      }
+      if (!currentVacation.finalDate) {
+        currentVacation.finalDate = thisCurrentVac.finalDate;
+      }
+      if (!currentVacation.price) {
+        currentVacation.price = thisCurrentVac.price;
+      }
+      if (!currentVacation.img) {
+        currentVacation.img = thisCurrentVac.img;
+      }
+    } else {
+      currentVacation[e.target.id] = e.target.value;
     }
   };
 
@@ -81,42 +84,52 @@ class VacationsInfo extends Component {
     this.getData();
   };
 
+  addNewVacBtn = () => (!this.props.newVac ? this.props.updateAddNewVac(true) : this.props.updateAddNewVac(false));
+
   addNewVac = async () => {
-    console.log("add new");
-    // let addNewVacation = await Api.postRequest(`/vacations/addNewVacation`, {
-    //   destination: this.currentVacation.destination,
-    //   description: this.currentVacation.description,
-    //   initialDate: this.currentVacation.initialDate,
-    //   finalDate: this.currentVacation.finalDate,
-    //   price: this.currentVacation.price,
-    //   img: this.currentVacation.img,
-    // });
-    // this.getData();
+    console.log(this.currentVacation);
+    let addNewVacation = await Api.postRequest(`/vacations/addNewVacation`, {
+      destination: this.currentVacation.destination,
+      description: this.currentVacation.description,
+      initialDate: this.currentVacation.initialDate,
+      finalDate: this.currentVacation.finalDate,
+      price: this.currentVacation.price,
+      img: this.currentVacation.img,
+    });
+    this.getData();
+    console.log(addNewVacation);
   };
 
   render() {
-    let isLoggedIn = this.props.isLoggedIn ? "Log In" : "Sign Up";
     let isAdmin =
       this.props.users[0].isAdmin == 0 ? (
         ""
       ) : (
         <div>
-          <button className="btn btn-primary m-3" onClick={() => this.addNewVac()}>
-            Add New Vacation
+          <button className="btn btn-primary m-3" onClick={() => this.addNewVacBtn()}>
+            {!this.props.newVac ? "Add New Vacation" : "Close New Vacation Form"}
           </button>
         </div>
       );
+
+    let openFormVac = this.props.users[0].isAdmin == 0 ? "" : !this.props.newVac ? "" : <VacationFrom type={0} addNewVac={this.addNewVac} vacation={this.currentVacation} onChangeFn={this.onChangeFn}></VacationFrom>;
     return (
       <div>
         <div className="row ">
           <div className="col-4  p-5">
             <h3>Hello {this.props.users[0].name}😊</h3>
           </div>
+
           <div className="col-4 p-5">
             <button className="btn btn-success" onClick={() => this.backToSignUp()}>
-              go back to {isLoggedIn}
+              go back to {this.props.isLoggedIn ? "Log In" : "Sign Up"}
             </button>
           </div>
+          <div className="col-4">{isAdmin}</div>
+        </div>
+        <div className="row">
+          <div className="col-4"></div>
+          <div className="col-4">{openFormVac}</div>
           <div className="col-4"></div>
         </div>
 
@@ -128,7 +141,7 @@ class VacationsInfo extends Component {
                   <VacationCards onClickFn={this.onClickFn} vacation={vacation}></VacationCards>
                 ) : (
                   <div>
-                    <VacationFrom vacation={vacation} onChangeFn={this.onChangeFn} updateVac={this.updateVac} removeVac={this.removeVac}></VacationFrom>
+                    <VacationFrom type={1} vacation={vacation} onChangeFn={this.onChangeFn} updateVac={this.updateVac} removeVac={this.removeVac}></VacationFrom>
                   </div>
                 )}
               </div>
@@ -146,6 +159,7 @@ const mapStateToProps = (state) => {
     users: state.users,
     isLoggedIn: state.isLoggedIn,
     isRegistered: state.isRegistered,
+    newVac: state.newVac,
   };
 };
 
@@ -172,6 +186,12 @@ const mapDispatchToProps = (dispatch) => {
     updateUsers(value) {
       dispatch({
         type: "updateUsers",
+        payload: value,
+      });
+    },
+    updateAddNewVac(value) {
+      dispatch({
+        type: "updateAddNewVac",
         payload: value,
       });
     },
