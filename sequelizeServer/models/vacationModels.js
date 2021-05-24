@@ -43,5 +43,11 @@ const vacations = sequelize.define("vacations", {
     allowNull: false,
     defaultValue: 0,
   },
+
+  isEditVac: {
+    type: Sequelize.STRING(250),
+    allowNull: false,
+    defaultValue: "false",
+  },
 });
 module.exports = vacations;

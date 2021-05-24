@@ -8,7 +8,7 @@ exports.getAllVacations = async (req, res) => {
       res.send(result);
     })
     .catch((err) => {
-      res.send("error load users");
+      res.send("error load vacations");
     });
 };
 
@@ -20,7 +20,7 @@ exports.addNewVacation = async (req, res, next) => {
     })
     .catch((err) => {
       res.send(err);
-      // res.send("error load users :)");
+      // res.send("error load vacations :)");
     });
 };
 
@@ -31,7 +31,7 @@ exports.updateDeleteVacation = async (req, res) => {
       res.send(result);
     })
     .catch((err) => {
-      res.send("error load users" + JSON.stringify(err));
+      res.send("error load vacations" + JSON.stringify(err));
     });
 };
 
@@ -42,7 +42,7 @@ exports.updateVacation = async (req, res) => {
       res.send(result);
     })
     .catch((err) => {
-      res.send("error load users" + JSON.stringify(err));
+      res.send("error load vacations" + JSON.stringify(err));
     });
 };
 
@@ -53,9 +53,21 @@ exports.updateImg = async (req, res) => {
       res.send(result);
     })
     .catch((err) => {
-      res.send("error load users" + JSON.stringify(err));
+      res.send("error load vacations" + JSON.stringify(err));
     });
 };
+
+exports.updateIsEditVac = async (req, res) => {
+  await vacations
+    .update({ isEditVac: req.body.isEditVac }, { where: { id: req.body.id } })
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => {
+      res.send("error load vacations" + JSON.stringify(err));
+    });
+};
+
 // exports.AddDelivery = async (req, res) => {
 //   let delivery = req.body;
 

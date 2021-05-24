@@ -10,7 +10,7 @@ class SignUp extends Component {
     mail: "22",
   };
 
-  componentDidMount = () => this.props.updateIsLoggedIn(false);
+  componentDidMount = () => {};
 
   onChangeFN = (event) => {
     this.currentUser[event.target.id] = event.target.value;

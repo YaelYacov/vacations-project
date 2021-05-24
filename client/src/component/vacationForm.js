@@ -1,11 +1,11 @@
 import React from "react";
 import UploadImg from "./uploadImg";
 
-const VacationForm = ({ type, vacation, onChangeFn, updateVac, removeVac, addNewVac }) => {
+const VacationForm = ({ type, vacation, onChangeFn, updateVac, removeVac, addNewVac, editVac }) => {
   let trashIcon =
     type == 1 ? (
       <div>
-        <i className="fas fa-edit float-start m-3"></i> <i className="fas fa-trash-alt float-end  m-3" onClick={() => removeVac(vacation.id)}></i>
+        <i className="fas fa-edit float-start m-3" onClick={() => editVac(vacation.id)}></i> <i className="fas fa-trash-alt float-end  m-3" onClick={() => removeVac(vacation.id)}></i>
       </div>
     ) : (
       ""

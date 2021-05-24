@@ -63,6 +63,7 @@ class VacationsInfo extends Component {
     if (updateVacation.data[0] == 1) {
       this.getData();
       alert(`Updating Vacation id : ${this.currentVacation.id} success`);
+      this.editVac(this.currentVacation.id);
       this.currentVacation.id = 0;
       this.currentVacation.destination = "";
       this.currentVacation.description = "";
@@ -100,6 +101,16 @@ class VacationsInfo extends Component {
     console.log(addNewVacation);
   };
 
+  editVac = async (vacId) => {
+    let findVac = this.props.vacations.find((vac) => vac.id == vacId);
+    let changeIsEdit = findVac.isEditVac == "false" ? "true" : "false";
+    let updateIsEditVac = await Api.postRequest(`/vacations/updateIsEditVac`, { isEditVac: changeIsEdit, id: findVac.id });
+    console.log(findVac, changeIsEdit);
+    this.getData();
+
+    console.log(updateIsEditVac);
+  };
+
   render() {
     let isAdmin =
       this.props.users[0].isAdmin == 0 ? (
@@ -135,15 +146,11 @@ class VacationsInfo extends Component {
 
         <div className="row p-3">
           {this.props.vacations.map((vacation) => {
+            // vacation.isEditVac = false;
             return (
               <div className="p-3 col-xl-3 col-md-6 col-sm-6">
-                {this.props.users[0].isAdmin == 0 ? (
-                  <VacationCards onClickFn={this.onClickFn} vacation={vacation}></VacationCards>
-                ) : (
-                  <div>
-                    <VacationFrom type={1} vacation={vacation} onChangeFn={this.onChangeFn} updateVac={this.updateVac} removeVac={this.removeVac}></VacationFrom>
-                  </div>
-                )}
+                {this.props.users[0].isAdmin == 0 ? <VacationCards isAdmin={0} onClickFn={this.onClickFn} vacation={vacation}></VacationCards> : <div>{<VacationCards removeVac={this.removeVac} isAdmin={1} onChangeFn={this.onChangeFn} updateVac={this.updateVac} removeVac={this.removeVac} onClickFn={this.onClickFn} vacation={vacation} editVac={this.editVac}></VacationCards>}</div>}
+                {/* <VacationFrom type={1} vacation={vacation} onChangeFn={this.onChangeFn} updateVac={this.updateVac} removeVac={this.removeVac} editVac={this.editVac}></VacationFrom> */}
               </div>
             );
           })}
@@ -192,6 +199,12 @@ const mapDispatchToProps = (dispatch) => {
     updateAddNewVac(value) {
       dispatch({
         type: "updateAddNewVac",
+        payload: value,
+      });
+    },
+    updateIsEditVac(value) {
+      dispatch({
+        type: "updateIsEditVac",
         payload: value,
       });
     },
