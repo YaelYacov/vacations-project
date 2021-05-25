@@ -57,16 +57,16 @@ exports.updateImg = async (req, res) => {
     });
 };
 
-exports.updateIsEditVac = async (req, res) => {
-  await vacations
-    .update({ isEditVac: req.body.isEditVac }, { where: { id: req.body.id } })
-    .then((result) => {
-      res.send(result);
-    })
-    .catch((err) => {
-      res.send("error load vacations" + JSON.stringify(err));
-    });
-};
+// exports.updateIsEditVac = async (req, res) => {
+//   await vacations
+//     .update({ isEditVac: req.body.isEditVac }, { where: { id: req.body.id } })
+//     .then((result) => {
+//       res.send(result);
+//     })
+//     .catch((err) => {
+//       res.send("error load vacations" + JSON.stringify(err));
+//     });
+// };
 
 // exports.AddDelivery = async (req, res) => {
 //   let delivery = req.body;

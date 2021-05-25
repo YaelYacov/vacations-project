@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+
 import * as Api from "../api/apiCalls";
 
 class UploadImg extends Component {
@@ -18,6 +20,10 @@ class UploadImg extends Component {
 
     let res = await Api.postRequest("/upload", formData);
     console.log(res);
+    console.log(res.data[0].filename, `http://www.localhost:5292/${res.data[0].filename}`);
+    let updateImg = await Api.postRequest(`/vacations/updateImg`, { img: `http://www.localhost:5292/${res.data[0].filename}`, id: this.props.currentVacId });
+    let getAllVacations = await Api.postRequest(`/vacations/getAllVacations`);
+    this.props.updateVacations([...getAllVacations.data]);
 
     // const formData = new FormData();
     // const files = this.filesToUpload;
@@ -46,5 +52,27 @@ class UploadImg extends Component {
     );
   }
 }
+const mapStateToProps = (state) => {
+  // console.log("AdminPage : ", state);
+  return {
+    currentVacId: state.currentVacId,
+  };
+};
 
-export default UploadImg;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    updateCurrentVacId(value) {
+      dispatch({
+        type: "updateCurrentVacId",
+        payload: value,
+      });
+    },
+    updateVacations(value) {
+      dispatch({
+        type: "updateVacations",
+        payload: value,
+      });
+    },
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(UploadImg);

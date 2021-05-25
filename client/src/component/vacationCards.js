@@ -4,7 +4,7 @@ import VacationFrom from "../component/vacationForm";
 const VacationCards = ({ vacation, onClickFn, isAdmin, editVac, removeVac, onChangeFn, updateVac }) => {
   return (
     <div className="card ">
-      {vacation.isEditVac == "false" ? (
+      {!vacation.isEditVac ? (
         <div>
           <div className="row">
             <div className="col-12 ">
