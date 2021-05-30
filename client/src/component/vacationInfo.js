@@ -104,7 +104,6 @@ class VacationsInfo extends Component {
     let findVac = this.props.vacations.find((vac) => vac.id == vacId);
     let changeIsEdit = !findVac.isEditVac ? (findVac.isEditVac = true) : (findVac.isEditVac = false);
     this.props.updateVacations([...this.props.vacations]);
-    console.log(changeIsEdit);
     this.props.updateCurrentVacId(vacId);
   };
 

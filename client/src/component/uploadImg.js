@@ -7,36 +7,31 @@ class UploadImg extends Component {
   filesToUpload;
   componentDidMount = () => {};
 
-  fileChangeEvent = (fileInput) => (this.filesToUpload = fileInput.target.files);
+  fileChangeEvent = (fileInput) => {
+    this.filesToUpload = fileInput.target.files;
+    console.log(this.filesToUpload);
+  };
 
   uploadFile = async () => {
     const formData = new FormData();
     const files = this.filesToUpload;
-
-    for (let i = 0; i < files.length; i++) {
-      formData.append("uploads[]", files[i], files[i]["name"]);
+    if (files) {
+      for (let i = 0; i < files.length; i++) {
+        formData.append("uploads[]", files[i], files[i]["name"]);
+      }
+      console.log(formData);
     }
-    console.log(formData);
 
     let res = await Api.postRequest("/upload", formData);
     console.log(res);
-    console.log(res.data[0].filename, `http://www.localhost:5292/${res.data[0].filename}`);
-    let updateImg = await Api.postRequest(`/vacations/updateImg`, { img: `http://www.localhost:5292/${res.data[0].filename}`, id: this.props.currentVacId });
+    let endOfImageName = res.data ? res.data.map((result) => `${result.filename.substr(-4)}`)[0] : console.log("some went wrong!, reload page");
+
+    console.log(endOfImageName);
+
+    let updateImg = !res.data ? alert("error load image, please reload") : endOfImageName == ".png" || endOfImageName == ".jpg" || endOfImageName == "jpeg" || endOfImageName == ".gif" ? await Api.postRequest(`/vacations/updateImg`, { img: `http://www.localhost:5292/${res.data[0].filename}`, id: this.props.currentVacId }) : alert("file is not an image");
+    console.log(res.data[0].filename, `http://www.localhost:5292/${res.data[0].filename}`, res.data[0].size);
     let getAllVacations = await Api.postRequest(`/vacations/getAllVacations`);
     this.props.updateVacations([...getAllVacations.data]);
-
-    // const formData = new FormData();
-    // const files = this.filesToUpload;
-    // console.log(files);
-
-    // for (let i = 0; i < files.length; i++) {
-    //   formData.append("uploads[]", files[i], files[i]["name"]);
-    // }
-    // console.log(formData);
-    // let res = await Api.postRequest("/upload", formData);
-    // console.log(res);
-
-    // files.map;
   };
 
   render() {
