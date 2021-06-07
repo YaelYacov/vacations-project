@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import * as Api from "../api/apiCalls";
+// ES6 import or TypeScript
+import { io } from "socket.io-client";
+// CommonJS
+// const io = require("socket.io-client");
 
 class Home extends Component {
   componentDidMount = () => {};

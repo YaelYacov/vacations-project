@@ -59,6 +59,9 @@ app.use("/vacations", VacationRoutes);
 const UsersRoute = require("./routes/usersRoute");
 app.use("/users", UsersRoute);
 
+const UsersVacationsRoutes = require("./routes/usersVacationsRoutes");
+app.use("/usersVacations", UsersVacationsRoutes);
+
 app.post("/upload", upload.array("uploads[]", 12), function (req, res) {
   console.log("files", req.files);
   res.send(req.files);

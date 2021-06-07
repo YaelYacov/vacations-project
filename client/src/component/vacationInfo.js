@@ -8,6 +8,7 @@ class VacationsInfo extends Component {
   componentDidMount() {
     this.getData();
   }
+  currentVacFavoriteId = -1;
 
   currentVacation = {
     id: 0,
@@ -75,9 +76,69 @@ class VacationsInfo extends Component {
     }
   };
 
-  onClickFn = (vacationId) => {
-    console.log(vacationId);
+  addVacToFavoritesFN = async (vacationId) => {
+    let isLikedBefore = {
+      isDeleted: -1,
+      currentVacFavoriteId: -1,
+      followers: -1,
+    };
+    console.log(this.currentVacFavoriteId == vacationId, this.props.vacations.find((vac) => vac.id == vacationId).followers);
+
+    let findIfVacLikedByUser = await Api.postRequest(`/usersVacations/getAllUsersVacations`, { vacationId: vacationId, userId: this.props.users[0].id });
+
+    // ///////
+    // let whileLikedBefore = findIfVacLikedByUser.data.find((vacUser) => vacUser.userId == this.props.users[0].id && vacUser.vacationId == vacationId).isDeleted == 0? 1 : 0
+    // if(findIfVacLikedByUser.data.find((vacUser) => vacUser.userId == this.props.users[0].id && vacUser.vacationId == vacationId).isDeleted == 0){
+    // isLikedBefore = {
+    //   isDeleted: 1,
+    //   currentVacFavoriteId: -1,
+    //   followers: -1,
+    // };
+
+    // }else{
+    //   isLikedBefore = {
+    //     isDeleted: 0,
+    //     currentVacFavoriteId: vacationId,
+    //     followers: 01,
+    //   };
+    // }
+    // // //////////
+
+    //     console.log(findIfVacLikedByUser.data.find((vacUser) => vacUser.userId == this.props.users[0].id && vacUser.vacationId == vacationId));
+    //     if (findIfVacLikedByUser.data.find((vacUser) => vacUser.userId == this.props.users[0].id && vacUser.vacationId == vacationId) == undefined) {
+    //       await Api.postRequest(`/usersVacations/insertNewFollowerToVac`, { vacationId: vacationId, userId: this.props.users[0].id });
+    //       await Api.postRequest(`/vacations/updateVacationFollowers`, { followers: Number(this.props.vacations.find((vac) => vac.id == vacationId).followers + 1), id: vacationId });
+    //       this.getData();
+
+    //       this.currentVacFavoriteId = vacationId;
+    //     } else  {
+    //       await Api.postRequest(`/usersVacations/updateDeleteFollowerToVac`, { isDeleted: 1, vacationId: vacationId, userId: this.props.users[0].id });
+    //       await Api.postRequest(`/vacations/updateVacationFollowers`, { followers: Number(this.props.vacations.find((vac) => vac.id == vacationId).followers - 1), id: vacationId });
+    //       this.getData();
+    //       this.currentVacFavoriteId = -1;
+    //     }
+
+    console.log(findIfVacLikedByUser.data.find((vacUser) => vacUser.userId == this.props.users[0].id && vacUser.vacationId == vacationId));
+    if (findIfVacLikedByUser.data.find((vacUser) => vacUser.userId == this.props.users[0].id && vacUser.vacationId == vacationId) == undefined) {
+      await Api.postRequest(`/usersVacations/insertNewFollowerToVac`, { vacationId: vacationId, userId: this.props.users[0].id });
+      await Api.postRequest(`/vacations/updateVacationFollowers`, { followers: Number(this.props.vacations.find((vac) => vac.id == vacationId).followers + 1), id: vacationId });
+      this.getData();
+
+      this.currentVacFavoriteId = vacationId;
+    } else if (findIfVacLikedByUser.data.find((vacUser) => vacUser.userId == this.props.users[0].id && vacUser.vacationId == vacationId).isDeleted == 0) {
+      await Api.postRequest(`/usersVacations/updateDeleteFollowerToVac`, { isDeleted: 1, vacationId: vacationId, userId: this.props.users[0].id });
+      await Api.postRequest(`/vacations/updateVacationFollowers`, { followers: Number(this.props.vacations.find((vac) => vac.id == vacationId).followers - 1), id: vacationId });
+      this.getData();
+      this.currentVacFavoriteId = -1;
+    } else {
+      await Api.postRequest(`/usersVacations/updateDeleteFollowerToVac`, { isDeleted: 0, vacationId: vacationId, userId: this.props.users[0].id });
+      await Api.postRequest(`/vacations/updateVacationFollowers`, { followers: Number(this.props.vacations.find((vac) => vac.id == vacationId).followers + 1), id: vacationId });
+      this.getData();
+      this.currentVacFavoriteId = vacationId;
+    }
   };
+
+  // updateVacFollowers = async
 
   removeVac = async (id) => {
     let updateDeleteVacation = await Api.postRequest(`/vacations/updateDeleteVacation`, { id: id });
@@ -144,7 +205,11 @@ class VacationsInfo extends Component {
           {this.props.vacations.map((vacation) => {
             return (
               <div className="p-3 col-xl-3 col-md-6 col-sm-6">
-                {this.props.users[0].isAdmin == 0 ? <VacationCards isAdmin={0} onClickFn={this.onClickFn} vacation={vacation}></VacationCards> : <div>{<VacationCards removeVac={this.removeVac} isAdmin={1} onChangeFn={this.onChangeFn} updateVac={this.updateVac} removeVac={this.removeVac} onClickFn={this.onClickFn} vacation={vacation} editVac={this.editVac}></VacationCards>}</div>}
+                {this.props.users[0].isAdmin == 0 ? (
+                  <VacationCards isAdmin={0} addVacToFavoritesFN={this.addVacToFavoritesFN} vacation={vacation} currentVacFavoriteId={this.currentVacFavoriteId}></VacationCards>
+                ) : (
+                  <div>{<VacationCards removeVac={this.removeVac} isAdmin={1} onChangeFn={this.onChangeFn} updateVac={this.updateVac} removeVac={this.removeVac} addVacToFavoritesFN={this.addVacToFavoritesFN} vacation={vacation} editVac={this.editVac}></VacationCards>}</div>
+                )}
               </div>
             );
           })}
