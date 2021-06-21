@@ -5,9 +5,10 @@ import VacationCards from "../component/vacationCards";
 import VacationFrom from "../component/vacationForm";
 
 class VacationsInfo extends Component {
-  componentDidMount() {
+  componentDidMount = () => {
+    console.log(this.props.user);
     this.getData();
-  }
+  };
   currentVacFavoriteId = -1;
 
   currentVacation = {
@@ -20,9 +21,18 @@ class VacationsInfo extends Component {
     price: 0,
   };
 
+  likedVacArr = [];
+
+  userFollowings = async () => {
+    let getUserByMail = await Api.postRequest(`/users/getUserByMail`, { mail: this.props.user[0].mail, password: this.props.user[0].password });
+    this.props.updateUser([...getUserByMail.data]);
+    console.log(this.props.user);
+  };
+
   getData = async () => {
     let getAllVacations = await Api.postRequest(`/vacations/getAllVacations`);
     this.props.updateVacations([...getAllVacations.data]);
+    console.log(this.props.vacations);
   };
 
   backToSignUp = () => (this.props.isLoggedIn ? this.props.updateIsLoggedIn(false) : this.props.updateIsRegistered(false));
@@ -57,8 +67,7 @@ class VacationsInfo extends Component {
     }
   };
 
-  updateVac = async (vacationOb) => {
-    // console.log("vacationOb: ", vacationOb, " currentVacation:", this.currentVacation);
+  updateVac = async () => {
     let updateVacation = await Api.postRequest(`/vacations/updateVacation`, this.currentVacation);
     if (updateVacation.data[0] == 1) {
       this.getData();
@@ -77,68 +86,28 @@ class VacationsInfo extends Component {
   };
 
   addVacToFavoritesFN = async (vacationId) => {
-    let isLikedBefore = {
-      isDeleted: -1,
-      currentVacFavoriteId: -1,
-      followers: -1,
-    };
-    console.log(this.currentVacFavoriteId == vacationId, this.props.vacations.find((vac) => vac.id == vacationId).followers);
+    let getAllUsersVacations = await Api.postRequest(`/usersVacations/getAllUsersVacations`);
+    let ifUserExistsInTable = getAllUsersVacations.data.find((userVac) => userVac.vacationId == vacationId && userVac.userId == this.props.user[0].id); //if not exist = undefined;
 
-    let findIfVacLikedByUser = await Api.postRequest(`/usersVacations/getAllUsersVacations`, { vacationId: vacationId, userId: this.props.users[0].id });
-
-    // ///////
-    // let whileLikedBefore = findIfVacLikedByUser.data.find((vacUser) => vacUser.userId == this.props.users[0].id && vacUser.vacationId == vacationId).isDeleted == 0? 1 : 0
-    // if(findIfVacLikedByUser.data.find((vacUser) => vacUser.userId == this.props.users[0].id && vacUser.vacationId == vacationId).isDeleted == 0){
-    // isLikedBefore = {
-    //   isDeleted: 1,
-    //   currentVacFavoriteId: -1,
-    //   followers: -1,
-    // };
-
-    // }else{
-    //   isLikedBefore = {
-    //     isDeleted: 0,
-    //     currentVacFavoriteId: vacationId,
-    //     followers: 01,
-    //   };
-    // }
-    // // //////////
-
-    //     console.log(findIfVacLikedByUser.data.find((vacUser) => vacUser.userId == this.props.users[0].id && vacUser.vacationId == vacationId));
-    //     if (findIfVacLikedByUser.data.find((vacUser) => vacUser.userId == this.props.users[0].id && vacUser.vacationId == vacationId) == undefined) {
-    //       await Api.postRequest(`/usersVacations/insertNewFollowerToVac`, { vacationId: vacationId, userId: this.props.users[0].id });
-    //       await Api.postRequest(`/vacations/updateVacationFollowers`, { followers: Number(this.props.vacations.find((vac) => vac.id == vacationId).followers + 1), id: vacationId });
-    //       this.getData();
-
-    //       this.currentVacFavoriteId = vacationId;
-    //     } else  {
-    //       await Api.postRequest(`/usersVacations/updateDeleteFollowerToVac`, { isDeleted: 1, vacationId: vacationId, userId: this.props.users[0].id });
-    //       await Api.postRequest(`/vacations/updateVacationFollowers`, { followers: Number(this.props.vacations.find((vac) => vac.id == vacationId).followers - 1), id: vacationId });
-    //       this.getData();
-    //       this.currentVacFavoriteId = -1;
-    //     }
-
-    console.log(findIfVacLikedByUser.data.find((vacUser) => vacUser.userId == this.props.users[0].id && vacUser.vacationId == vacationId));
-    if (findIfVacLikedByUser.data.find((vacUser) => vacUser.userId == this.props.users[0].id && vacUser.vacationId == vacationId) == undefined) {
-      await Api.postRequest(`/usersVacations/insertNewFollowerToVac`, { vacationId: vacationId, userId: this.props.users[0].id });
-      await Api.postRequest(`/vacations/updateVacationFollowers`, { followers: Number(this.props.vacations.find((vac) => vac.id == vacationId).followers + 1), id: vacationId });
+    if (ifUserExistsInTable == undefined) {
+      await Api.postRequest(`/usersVacations/insertNewFollowerToVac`, { vacationId: vacationId, userId: this.props.user[0].id });
+      this.userFollowings();
+      this.getData();
+      // console.log(this.props.user); ///user is not updated as in this.userFollowers
+    } else if (ifUserExistsInTable.isDeleted == 0) {
+      await Api.postRequest(`/usersVacations/updateDeleteFollowerToVac`, { isDeleted: 1, vacationId: vacationId, userId: this.props.user[0].id });
+      this.userFollowings();
       this.getData();
 
-      this.currentVacFavoriteId = vacationId;
-    } else if (findIfVacLikedByUser.data.find((vacUser) => vacUser.userId == this.props.users[0].id && vacUser.vacationId == vacationId).isDeleted == 0) {
-      await Api.postRequest(`/usersVacations/updateDeleteFollowerToVac`, { isDeleted: 1, vacationId: vacationId, userId: this.props.users[0].id });
-      await Api.postRequest(`/vacations/updateVacationFollowers`, { followers: Number(this.props.vacations.find((vac) => vac.id == vacationId).followers - 1), id: vacationId });
-      this.getData();
-      this.currentVacFavoriteId = -1;
+      // console.log(this.props.user[0].usersVacations); ///user is not updated as in this.userFollowers
     } else {
-      await Api.postRequest(`/usersVacations/updateDeleteFollowerToVac`, { isDeleted: 0, vacationId: vacationId, userId: this.props.users[0].id });
-      await Api.postRequest(`/vacations/updateVacationFollowers`, { followers: Number(this.props.vacations.find((vac) => vac.id == vacationId).followers + 1), id: vacationId });
+      await Api.postRequest(`/usersVacations/updateDeleteFollowerToVac`, { isDeleted: 0, vacationId: vacationId, userId: this.props.user[0].id });
+      this.userFollowings();
       this.getData();
-      this.currentVacFavoriteId = vacationId;
+
+      // console.log(this.props.user[0].usersVacations); ///user is not updated as in this.userFollowers
     }
   };
-
-  // updateVacFollowers = async
 
   removeVac = async (id) => {
     let updateDeleteVacation = await Api.postRequest(`/vacations/updateDeleteVacation`, { id: id });
@@ -166,11 +135,12 @@ class VacationsInfo extends Component {
     let changeIsEdit = !findVac.isEditVac ? (findVac.isEditVac = true) : (findVac.isEditVac = false);
     this.props.updateVacations([...this.props.vacations]);
     this.props.updateCurrentVacId(vacId);
+    console.log(this.props.vacations);
   };
 
   render() {
     let isAdmin =
-      this.props.users[0].isAdmin == 0 ? (
+      this.props.user[0].isAdmin == 0 ? (
         ""
       ) : (
         <div>
@@ -180,12 +150,12 @@ class VacationsInfo extends Component {
         </div>
       );
 
-    let openFormVac = this.props.users[0].isAdmin == 0 ? "" : !this.props.newVac ? "" : <VacationFrom type={0} addNewVac={this.addNewVac} vacation={this.currentVacation} onChangeFn={this.onChangeFn}></VacationFrom>;
+    let openFormVac = this.props.user[0].isAdmin == 0 ? "" : !this.props.newVac ? "" : <VacationFrom type={0} addNewVac={this.addNewVac} vacation={this.currentVacation} onChangeFn={this.onChangeFn}></VacationFrom>;
     return (
       <div>
         <div className="row ">
           <div className="col-4  p-5">
-            <h3>Hello {this.props.users[0].name}😊</h3>
+            <h3>Hello {this.props.user[0].name}😊</h3>
           </div>
 
           <div className="col-4 p-5">
@@ -200,16 +170,11 @@ class VacationsInfo extends Component {
           <div className="col-4">{openFormVac}</div>
           <div className="col-4"></div>
         </div>
-
         <div className="row p-3">
-          {this.props.vacations.map((vacation) => {
+          {this.props.vacations.map((vacation, index) => {
             return (
               <div className="p-3 col-xl-3 col-md-6 col-sm-6">
-                {this.props.users[0].isAdmin == 0 ? (
-                  <VacationCards isAdmin={0} addVacToFavoritesFN={this.addVacToFavoritesFN} vacation={vacation} currentVacFavoriteId={this.currentVacFavoriteId}></VacationCards>
-                ) : (
-                  <div>{<VacationCards removeVac={this.removeVac} isAdmin={1} onChangeFn={this.onChangeFn} updateVac={this.updateVac} removeVac={this.removeVac} addVacToFavoritesFN={this.addVacToFavoritesFN} vacation={vacation} editVac={this.editVac}></VacationCards>}</div>
-                )}
+                <VacationCards user={this.props.user[0]} addVacToFavoritesFN={this.addVacToFavoritesFN} vacation={vacation} removeVac={this.removeVac} onChangeFn={this.onChangeFn} updateVac={this.updateVac} editVac={this.editVac}></VacationCards>
               </div>
             );
           })}
@@ -222,10 +187,11 @@ const mapStateToProps = (state) => {
   // console.log("AdminPage : ", state);
   return {
     vacations: state.vacations,
-    users: state.users,
+    user: state.user,
     isLoggedIn: state.isLoggedIn,
     isRegistered: state.isRegistered,
     newVac: state.newVac,
+    usersVacations: state.usersVacations,
   };
 };
 
@@ -249,9 +215,9 @@ const mapDispatchToProps = (dispatch) => {
         payload: value,
       });
     },
-    updateUsers(value) {
+    updateUser(value) {
       dispatch({
-        type: "updateUsers",
+        type: "updateUser",
         payload: value,
       });
     },
@@ -270,6 +236,12 @@ const mapDispatchToProps = (dispatch) => {
     updateCurrentVacId(value) {
       dispatch({
         type: "updateCurrentVacId",
+        payload: value,
+      });
+    },
+    updateUsersVacations(value) {
+      dispatch({
+        type: "updateUsersVacations",
         payload: value,
       });
     },

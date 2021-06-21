@@ -1,13 +1,15 @@
 const con = require("../utils/database");
 const vacations = require("../models/vacationModels");
+const UsersVacationModels = require("../models/usersVacationModels");
 
 exports.getAllVacations = async (req, res) => {
   await vacations
-    .findAll({ where: { isDeleted: 0 } })
+    .findAll({ where: { isDeleted: 0 }, include: [{ model: UsersVacationModels, attributes: ["userId"], where: { isDeleted: 0 }, required: false }] })
     .then((result) => {
       res.send(result);
     })
     .catch((err) => {
+      console.log(err);
       res.send("error load vacations");
     });
 };

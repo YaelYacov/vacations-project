@@ -56,12 +56,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    updateCurrentVacId(value) {
-      dispatch({
-        type: "updateCurrentVacId",
-        payload: value,
-      });
-    },
     updateVacations(value) {
       dispatch({
         type: "updateVacations",

@@ -5,7 +5,7 @@ const usersVacation = require("../models/usersVacationModels");
 
 exports.getAllUsersVacations = async (req, res) => {
   await usersVacation
-    .findAll()
+    .findAll({ where: { isDeleted: 0 } })
     .then((result) => {
       // console.log(result);
       res.send(result);
@@ -14,6 +14,19 @@ exports.getAllUsersVacations = async (req, res) => {
       res.send("error load users");
     });
 };
+////////
+exports.getVacFollowers = async (req, res) => {
+  await usersVacation
+    .findAll({ where: { vacationId: req.query.vacationId, isDeleted: 0 } })
+    .then((result) => {
+      // console.log(result);
+      res.send(result);
+    })
+    .catch((err) => {
+      res.send("error load users");
+    });
+};
+////
 
 // exports.updateNewFollowerToVac = async (req, res) => {
 //   await usersVacation
@@ -29,7 +42,7 @@ exports.getAllUsersVacations = async (req, res) => {
 exports.getAllVacationFollowers = async (req, res) => {
   await usersVacation
 
-    .findAll({ where: { vacationId: req.body.vacationId, isDeleted: 0 } })
+    .findAll({ where: { isDeleted: 0, userId: req.body.userId } })
     .then((result) => {
       // console.log(result);
       res.send(result);

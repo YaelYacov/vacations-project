@@ -14,6 +14,7 @@ const Vacations = require("./models/vacationModels");
 const UsersVacations = require("./models/usersVacationModels");
 
 Users.hasMany(UsersVacations);
+Vacations.hasMany(UsersVacations);
 UsersVacations.belongsTo(Vacations);
 
 app.use(express.static(path.join(__dirname, "uploads")));

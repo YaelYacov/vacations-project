@@ -1,10 +1,11 @@
 const initialState = {
   isLoggedIn: false,
   isRegistered: false,
-  users: [],
+  user: [],
   vacations: [],
   newVac: false,
   currentVacId: 0,
+  usersVacations: [],
 };
 
 function rootReducer(state = initialState, action) {
@@ -17,8 +18,8 @@ function rootReducer(state = initialState, action) {
     case "updateIsRegistered":
       state = { ...state, isRegistered: action.payload };
       break;
-    case "updateUsers":
-      state = { ...state, users: action.payload };
+    case "updateUser":
+      state = { ...state, user: action.payload };
       break;
     case "updateVacations":
       state = { ...state, vacations: action.payload };
@@ -28,6 +29,9 @@ function rootReducer(state = initialState, action) {
       break;
     case "updateCurrentVacId":
       state = { ...state, currentVacId: action.payload };
+      break;
+    case "updateUsersVacations":
+      state = { ...state, usersVacations: action.payload };
       break;
   }
   return state;

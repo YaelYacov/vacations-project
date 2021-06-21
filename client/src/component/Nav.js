@@ -60,15 +60,15 @@ class Nav extends Component {
 const mapStateToProps = (state) => {
   // console.log("State : ", state);
   return {
-    users: state.users,
+    user: state.user,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    addUserToArray(value) {
+    updateUser(value) {
       dispatch({
-        type: "addUserToArray",
+        type: "updateUser",
         payload: value,
       });
     },

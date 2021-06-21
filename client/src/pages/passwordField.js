@@ -20,16 +20,15 @@ class PasswordField extends Component {
   onChangeFn = (e) => (this.currentUser[e.target.id] = e.target.value);
 
   loggedInSuccess = (getUserByMail) => {
-    this.props.updateUsers([...getUserByMail.data]);
+    this.props.updateUser([...getUserByMail]);
     this.props.updateIsLoggedIn(true);
-
-    this.currentUserId.id = getUserByMail.data[0].id;
+    this.currentUserId.id = getUserByMail[0].id;
   };
 
   isLoggedIn = async () => {
     let getUserByMail = await Api.postRequest(`/users/getUserByMail`, this.currentUser);
 
-    getUserByMail.data.length == 0 ? alert("Mail Or Password Invalid") : this.loggedInSuccess(getUserByMail);
+    getUserByMail.data.length == 0 ? alert("Mail Or Password Invalid") : this.loggedInSuccess(getUserByMail.data);
   };
 
   onSubmitFn = () => {
@@ -57,7 +56,7 @@ class PasswordField extends Component {
 const mapStateToProps = (state) => {
   // console.log("AdminPage : ", state);
   return {
-    users: state.users,
+    user: state.user,
     isLoggedIn: state.isLoggedIn,
     staff: state.staff,
   };
@@ -65,9 +64,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    updateUsers(value) {
+    updateUser(value) {
       dispatch({
-        type: "updateUsers",
+        type: "updateUser",
         payload: value,
       });
     },

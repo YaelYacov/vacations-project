@@ -19,7 +19,7 @@ class SignUp extends Component {
 
   afterInsertFn = async () => {
     let getUserByMail = await Api.postRequest(`/users/getUserByMail`, { mail: this.currentUser.mail, password: this.currentUser.password });
-    this.props.updateUsers([...getUserByMail.data]);
+    this.props.updateUser([...getUserByMail.data]);
     this.props.updateIsRegistered(true);
   };
 
@@ -81,7 +81,7 @@ class SignUp extends Component {
 const mapStateToProps = (state) => {
   // console.log("State : ", state);
   return {
-    users: state.users,
+    user: state.user,
     isLoggedIn: state.isLoggedIn,
     isRegistered: state.isRegistered,
   };
@@ -89,9 +89,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    updateUsers(value) {
+    updateUser(value) {
       dispatch({
-        type: "updateUsers",
+        type: "updateUser",
         payload: value,
       });
     },

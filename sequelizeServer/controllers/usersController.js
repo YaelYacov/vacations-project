@@ -2,20 +2,6 @@ const con = require("../utils/database");
 const Users = require("../models/usersModels");
 const UsersVacationModels = require("../models/usersVacationModels");
 
-// exports.getAllUsers = async (req, res) => {
-//   await UsersVacationModels.findAll({
-//     where: {
-//       isAdmin: 0,
-//     },
-//   })
-//     .then((result) => {
-//       console.log(result);
-//       res.send(UsersVacationModels);
-//     })
-//     .catch((err) => {
-//       res.send("error load users");
-//     });
-// };
 exports.getAllUsers = async (req, res) => {
   await Users.findAll({
     where: {
@@ -32,21 +18,45 @@ exports.getAllUsers = async (req, res) => {
 };
 
 exports.getUserByMail = async (req, res, next) => {
+  // let usersInTable = await UsersVacationModels.findAll({ where: { isDeleted: 0 } });
+  // usersInTable
+
+  //
+
   await Users.findAll({
     where: {
       mail: req.body.mail,
       password: req.body.password,
     },
+    include: [{ model: UsersVacationModels, attributes: ["vacationId"], where: { isDeleted: 0 }, required: false }],
+
+    // include: [{ model: UsersVacationModels, attributes: ["vacationId"], where: { isDeleted: 0 } }],
   })
     .then((users) => {
-      // console.log(users);
+      console.log(users);
       res.send(users);
     })
     .catch((err) => {
-      res.send("error load users :)");
+      res.send("error load users :)", err);
     });
 };
 
+exports.getUserFollowings = async (req, res, next) => {
+  await Users.findAll({
+    where: {
+      id: req.body.id,
+    },
+
+    include: [{ model: UsersVacationModels, attributes: ["vacationId"], where: { isDeleted: 0 } }],
+  })
+    .then((users) => {
+      console.log(users);
+      res.send(users);
+    })
+    .catch((err) => {
+      res.send("error load users :)", err);
+    });
+};
 exports.addNewUser = async (req, res, next) => {
   await Users.create({ name: req.body.name, mail: req.body.mail, password: req.body.password })
     .then((users) => {

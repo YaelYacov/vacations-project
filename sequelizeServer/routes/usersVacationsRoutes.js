@@ -6,6 +6,7 @@ router.post("/insertNewFollowerToVac", usersVacationsController.insertNewFollowe
 router.post("/updateDeleteFollowerToVac", usersVacationsController.updateDeleteFollowerToVac);
 router.post("/getAllVacationFollowers", usersVacationsController.getAllVacationFollowers);
 router.post("/getAllUsersVacations", usersVacationsController.getAllUsersVacations);
+router.post("/getVacFollowers", usersVacationsController.getVacFollowers);
 // router.post("/", usersVacationsController.getAllUsersById);
 // router.post("/addNewUser", usersVacationsController.addNewUser);
 module.exports = router;
