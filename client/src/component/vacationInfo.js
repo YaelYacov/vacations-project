@@ -96,7 +96,6 @@ class VacationsInfo extends Component {
   addVacToFavoritesFN = async (vacationId) => {
     let getAllUsersVacations = await Api.postRequest(`/usersVacations/getAllUsersVacations`);
     let ifUserExistsInTable = getAllUsersVacations.data.find((userVac) => userVac.vacationId == vacationId && userVac.userId == this.props.user[0].id); //if not exist = undefined;
-
     if (ifUserExistsInTable == undefined) {
       await Api.postRequest(`/usersVacations/insertNewFollowerToVac`, { vacationId: vacationId, userId: this.props.user[0].id });
       this.getData();
