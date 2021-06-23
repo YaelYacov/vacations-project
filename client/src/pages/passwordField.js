@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import LogIn from "../component/logIn";
 import VacationInfo from "../component/vacationInfo";
 import UploadImg from "../component/uploadImg";
+import { Link } from "react-router-dom";
 
 class PasswordField extends Component {
   componentDidMount = () => {};
@@ -23,6 +24,8 @@ class PasswordField extends Component {
     this.props.updateUser([...getUserByMail]);
     this.props.updateIsLoggedIn(true);
     this.currentUserId.id = getUserByMail[0].id;
+    // localStorage.setItem("user", JSON.stringify({ ...this.props.user }));
+    // console.log(localStorage.getItem("user"));
   };
 
   isLoggedIn = async () => {
@@ -39,9 +42,17 @@ class PasswordField extends Component {
 
   render() {
     return (
-      <div className="container">
+      <div className="container bgPasPage w-100 ">
         {!this.props.isLoggedIn ? (
-          <LogIn onSubmitFn={this.onSubmitFn} onChangeFn={this.onChangeFn}></LogIn>
+          <div>
+            <LogIn onSubmitFn={this.onSubmitFn} onChangeFn={this.onChangeFn}></LogIn>
+            <h5>
+              Doesn't have an account yet?
+              <a className="nav-link">
+                <Link to="/signsForms/signUp">Sign Up</Link>
+              </a>
+            </h5>
+          </div>
         ) : (
           <div>
             <div className="row">
@@ -58,7 +69,6 @@ const mapStateToProps = (state) => {
   return {
     user: state.user,
     isLoggedIn: state.isLoggedIn,
-    staff: state.staff,
   };
 };
 
@@ -70,14 +80,6 @@ const mapDispatchToProps = (dispatch) => {
         payload: value,
       });
     },
-
-    updateStaff(value) {
-      dispatch({
-        type: "updateStaff",
-        payload: value,
-      });
-    },
-
     updateIsLoggedIn(value) {
       dispatch({
         type: "updateIsLoggedIn",

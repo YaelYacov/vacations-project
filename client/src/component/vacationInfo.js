@@ -6,7 +6,6 @@ import VacationFrom from "../component/vacationForm";
 
 class VacationsInfo extends Component {
   componentDidMount = () => {
-    // console.log(this.props.user);
     this.getData();
   };
   currentVacFavoriteId = -1;
@@ -30,8 +29,6 @@ class VacationsInfo extends Component {
       this.props.vacations.map((vac) => this.allLikedVacs({ ...vac }));
     }
   };
-
-  backToSignUp = () => (this.props.isLoggedIn ? this.props.updateIsLoggedIn(false) : this.props.updateIsRegistered(false));
 
   onChangeFn = (e, currentVac, type) => {
     let currentVacation = this.currentVacation;
@@ -86,8 +83,6 @@ class VacationsInfo extends Component {
     let spliceVacFromArr = this.props.vacations.splice(findIdxVacInArr, 1);
     let unshiftVac = this.props.vacations.unshift(spliceVacFromArr[0]);
     this.props.updateVacations([...this.props.vacations]);
-
-    // console.log(this.props.vacations, findIdxVacInArr);
   };
 
   allLikedVacs = (vacation) => {
@@ -135,7 +130,6 @@ class VacationsInfo extends Component {
     let findVac = this.props.vacations.find((vac) => vac.id == vacId);
     let changeIsEdit = !findVac.isEditVac ? (findVac.isEditVac = true) : (findVac.isEditVac = false);
     this.props.updateVacations([...this.props.vacations]);
-    this.props.updateCurrentVacId(vacId);
     console.log(this.props.vacations);
   };
 
@@ -144,7 +138,7 @@ class VacationsInfo extends Component {
       this.props.user[0].isAdmin == 0 ? (
         ""
       ) : (
-        <div>
+        <div lassName="col-4">
           <button className="btn btn-primary m-3" onClick={() => this.addNewVacBtn()}>
             {!this.props.newVac ? "Add New Vacation" : "Close New Vacation Form"}
           </button>
@@ -157,12 +151,6 @@ class VacationsInfo extends Component {
         <div className="row ">
           <div className="col-4  p-5">
             <h3>Hello {this.props.user[0].name}😊</h3>
-          </div>
-
-          <div className="col-4 p-5">
-            <button className="btn btn-success" onClick={() => this.backToSignUp()}>
-              go back to {this.props.isLoggedIn ? "Log In" : "Sign Up"}
-            </button>
           </div>
           <div className="col-4">{isAdmin}</div>
         </div>
@@ -191,7 +179,6 @@ const mapStateToProps = (state) => {
     vacations: state.vacations,
     user: state.user,
     isLoggedIn: state.isLoggedIn,
-    isRegistered: state.isRegistered,
     newVac: state.newVac,
   };
 };
@@ -204,12 +191,7 @@ const mapDispatchToProps = (dispatch) => {
         payload: value,
       });
     },
-    updateIsRegistered(value) {
-      dispatch({
-        type: "updateIsRegistered",
-        payload: value,
-      });
-    },
+
     updateVacations(value) {
       dispatch({
         type: "updateVacations",
@@ -225,12 +207,6 @@ const mapDispatchToProps = (dispatch) => {
     updateAddNewVac(value) {
       dispatch({
         type: "updateAddNewVac",
-        payload: value,
-      });
-    },
-    updateCurrentVacId(value) {
-      dispatch({
-        type: "updateCurrentVacId",
         payload: value,
       });
     },

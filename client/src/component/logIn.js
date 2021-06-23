@@ -1,6 +1,6 @@
 const LogIn = ({ onSubmitFn, onChangeFn }) => {
   return (
-    <div className="row">
+    <div className="row pasPage">
       <div className="col-12 p-5">
         <div className="card text-center mx-auto w-25">
           <div className="card-body">

@@ -10,7 +10,12 @@ class SignUp extends Component {
     mail: "22",
   };
 
-  componentDidMount = () => {};
+  componentDidMount = () => {
+    if (this.props.isLoggedIn == true) {
+      this.props.updateIsLoggedIn(false);
+      this.props.updateUser([]);
+    }
+  };
 
   onChangeFN = (event) => {
     this.currentUser[event.target.id] = event.target.value;
@@ -20,7 +25,7 @@ class SignUp extends Component {
   afterInsertFn = async () => {
     let getUserByMail = await Api.postRequest(`/users/getUserByMail`, { mail: this.currentUser.mail, password: this.currentUser.password });
     this.props.updateUser([...getUserByMail.data]);
-    this.props.updateIsRegistered(true);
+    this.props.updateIsLoggedIn(true);
   };
 
   insertNewUser = async () => {
@@ -40,7 +45,7 @@ class SignUp extends Component {
   };
 
   render() {
-    let isRegistered = !this.props.isRegistered ? (
+    let isLoggedIn = !this.props.isLoggedIn ? (
       <div className="col-12 p-5">
         <div className="row">
           <h1>Sign Up</h1>
@@ -72,7 +77,7 @@ class SignUp extends Component {
 
     return (
       <div className="container">
-        <div className="row pt-5 mx-auto">{isRegistered}</div>
+        <div className="row pt-5 mx-auto">{isLoggedIn}</div>
       </div>
     );
   }
@@ -83,7 +88,6 @@ const mapStateToProps = (state) => {
   return {
     user: state.user,
     isLoggedIn: state.isLoggedIn,
-    isRegistered: state.isRegistered,
   };
 };
 
@@ -98,12 +102,6 @@ const mapDispatchToProps = (dispatch) => {
     updateIsLoggedIn(value) {
       dispatch({
         type: "updateIsLoggedIn",
-        payload: value,
-      });
-    },
-    updateIsRegistered(value) {
-      dispatch({
-        type: "updateIsRegistered",
         payload: value,
       });
     },
