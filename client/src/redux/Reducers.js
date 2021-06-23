@@ -5,7 +5,6 @@ const initialState = {
   vacations: [],
   newVac: false,
   currentVacId: 0,
-  usersVacations: [],
 };
 
 function rootReducer(state = initialState, action) {
@@ -29,9 +28,6 @@ function rootReducer(state = initialState, action) {
       break;
     case "updateCurrentVacId":
       state = { ...state, currentVacId: action.payload };
-      break;
-    case "updateUsersVacations":
-      state = { ...state, usersVacations: action.payload };
       break;
   }
   return state;

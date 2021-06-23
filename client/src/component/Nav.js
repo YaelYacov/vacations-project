@@ -32,6 +32,17 @@ class Nav extends Component {
                           <Link to="/signsForms/logIn">log in</Link>
                         </a>
                       </li>
+                      {this.props.user.length == 0 ? (
+                        ""
+                      ) : this.props.user[0].isAdmin == 0 ? (
+                        ""
+                      ) : (
+                        <li className="nav-item">
+                          <a className="nav-link">
+                            <Link to="/followersGraph">followers Graph</Link>
+                          </a>
+                        </li>
+                      )}
                     </ul>
                   </div>
                 </div>

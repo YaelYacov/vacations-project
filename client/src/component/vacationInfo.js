@@ -6,7 +6,7 @@ import VacationFrom from "../component/vacationForm";
 
 class VacationsInfo extends Component {
   componentDidMount = () => {
-    console.log(this.props.user);
+    // console.log(this.props.user);
     this.getData();
   };
   currentVacFavoriteId = -1;
@@ -23,16 +23,12 @@ class VacationsInfo extends Component {
 
   likedVacArr = [];
 
-  userFollowings = async () => {
-    let getUserByMail = await Api.postRequest(`/users/getUserByMail`, { mail: this.props.user[0].mail, password: this.props.user[0].password });
-    this.props.updateUser([...getUserByMail.data]);
-    console.log(this.props.user);
-  };
-
   getData = async () => {
     let getAllVacations = await Api.postRequest(`/vacations/getAllVacations`);
-    this.props.updateVacations([...getAllVacations.data]);
-    console.log(this.props.vacations);
+    if (getAllVacations.statusText == "OK" && getAllVacations.status == 200) {
+      this.props.updateVacations([...getAllVacations.data]);
+      this.props.vacations.map((vac) => this.allLikedVacs({ ...vac }));
+    }
   };
 
   backToSignUp = () => (this.props.isLoggedIn ? this.props.updateIsLoggedIn(false) : this.props.updateIsRegistered(false));
@@ -85,27 +81,33 @@ class VacationsInfo extends Component {
     }
   };
 
+  changeVacLoc = (vacationId) => {
+    let findIdxVacInArr = this.props.vacations.findIndex((vac) => vac.id == vacationId);
+    let spliceVacFromArr = this.props.vacations.splice(findIdxVacInArr, 1);
+    let unshiftVac = this.props.vacations.unshift(spliceVacFromArr[0]);
+    this.props.updateVacations([...this.props.vacations]);
+
+    // console.log(this.props.vacations, findIdxVacInArr);
+  };
+
+  allLikedVacs = (vacation) => {
+    let filteredVacs = [];
+    if (vacation.usersVacations.length > 0) {
+      filteredVacs = vacation.usersVacations.filter((userVac) => userVac.userId == this.props.user[0].id);
+      if (filteredVacs.length > 0) this.changeVacLoc(vacation.id);
+    }
+  };
+
   addVacToFavoritesFN = async (vacationId) => {
     let getAllUsersVacations = await Api.postRequest(`/usersVacations/getAllUsersVacations`);
     let ifUserExistsInTable = getAllUsersVacations.data.find((userVac) => userVac.vacationId == vacationId && userVac.userId == this.props.user[0].id); //if not exist = undefined;
 
     if (ifUserExistsInTable == undefined) {
       await Api.postRequest(`/usersVacations/insertNewFollowerToVac`, { vacationId: vacationId, userId: this.props.user[0].id });
-      this.userFollowings();
       this.getData();
-      // console.log(this.props.user); ///user is not updated as in this.userFollowers
     } else if (ifUserExistsInTable.isDeleted == 0) {
       await Api.postRequest(`/usersVacations/updateDeleteFollowerToVac`, { isDeleted: 1, vacationId: vacationId, userId: this.props.user[0].id });
-      this.userFollowings();
       this.getData();
-
-      // console.log(this.props.user[0].usersVacations); ///user is not updated as in this.userFollowers
-    } else {
-      await Api.postRequest(`/usersVacations/updateDeleteFollowerToVac`, { isDeleted: 0, vacationId: vacationId, userId: this.props.user[0].id });
-      this.userFollowings();
-      this.getData();
-
-      // console.log(this.props.user[0].usersVacations); ///user is not updated as in this.userFollowers
     }
   };
 
@@ -117,7 +119,6 @@ class VacationsInfo extends Component {
   addNewVacBtn = () => (!this.props.newVac ? this.props.updateAddNewVac(true) : this.props.updateAddNewVac(false));
 
   addNewVac = async () => {
-    console.log(this.currentVacation);
     let addNewVacation = await Api.postRequest(`/vacations/addNewVacation`, {
       destination: this.currentVacation.destination,
       description: this.currentVacation.description,
@@ -172,6 +173,7 @@ class VacationsInfo extends Component {
         </div>
         <div className="row p-3">
           {this.props.vacations.map((vacation, index) => {
+            // console.log(vacation.usersVacations);
             return (
               <div className="p-3 col-xl-3 col-md-6 col-sm-6">
                 <VacationCards user={this.props.user[0]} addVacToFavoritesFN={this.addVacToFavoritesFN} vacation={vacation} removeVac={this.removeVac} onChangeFn={this.onChangeFn} updateVac={this.updateVac} editVac={this.editVac}></VacationCards>
@@ -191,7 +193,6 @@ const mapStateToProps = (state) => {
     isLoggedIn: state.isLoggedIn,
     isRegistered: state.isRegistered,
     newVac: state.newVac,
-    usersVacations: state.usersVacations,
   };
 };
 
@@ -227,21 +228,9 @@ const mapDispatchToProps = (dispatch) => {
         payload: value,
       });
     },
-    updateIsEditVac(value) {
-      dispatch({
-        type: "updateIsEditVac",
-        payload: value,
-      });
-    },
     updateCurrentVacId(value) {
       dispatch({
         type: "updateCurrentVacId",
-        payload: value,
-      });
-    },
-    updateUsersVacations(value) {
-      dispatch({
-        type: "updateUsersVacations",
         payload: value,
       });
     },

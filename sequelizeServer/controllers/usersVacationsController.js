@@ -1,6 +1,5 @@
 const con = require("../utils/database");
 const Users = require("../models/usersModels");
-// const UsersVacationModels = require("../models/usersVacationModels");
 const usersVacation = require("../models/usersVacationModels");
 
 exports.getAllUsersVacations = async (req, res) => {
@@ -11,7 +10,7 @@ exports.getAllUsersVacations = async (req, res) => {
       res.send(result);
     })
     .catch((err) => {
-      res.send("error load users");
+      res.send(err);
     });
 };
 ////////
@@ -23,7 +22,7 @@ exports.getVacFollowers = async (req, res) => {
       res.send(result);
     })
     .catch((err) => {
-      res.send("error load users");
+      res.send("error load UsersVacations");
     });
 };
 ////
