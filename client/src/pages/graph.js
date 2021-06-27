@@ -1,45 +1,43 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Route, Redirect } from "react-router-dom";
 
 import { Bar } from "react-chartjs-2";
 
 class GraphComp extends Component {
   componentDidMount = () => {
+    console.log(this.props.user.length == 0);
+    // && this.props.user[0].isAdmin == 1
+
     console.log(this.props.vacations.filter((vacation) => vacation.usersVacations.length > 0).map((vac) => vac.destination));
   };
 
   data = {
     labels: [...this.props.vacations.filter((vacation) => vacation.usersVacations.length > 0).map((vac) => vac.destination)],
-    //   labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
     datasets: [
       {
-        label: `# of Followers`,
+        label: "# of Red Votes",
         data: [...this.props.vacations.filter((vacation) => vacation.usersVacations.length > 0).map((vac) => vac.usersVacations.length)],
-        backgroundColor: ["rgba(255, 99, 132, 0.2)", "rgba(54, 162, 235, 0.2)", "rgba(255, 206, 86, 0.2)", "rgba(75, 192, 192, 0.2)", "rgba(153, 102, 255, 0.2)", "rgba(255, 159, 64, 0.2)"],
-        borderColor: ["rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)", "rgba(255, 206, 86, 1)", "rgba(75, 192, 192, 1)", "rgba(153, 102, 255, 1)", "rgba(255, 159, 64, 1)"],
-        borderWidth: 1,
+        backgroundColor: ["rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)", "rgba(255, 206, 86, 1)", "rgba(75, 192, 192, 1)", "rgba(153, 102, 255, 1)", "rgba(255, 159, 64, 1)"],
       },
     ],
   };
 
   options = {
-    indexAxis: "y",
-    // Elements options apply to all of the options unless overridden in a dataset
-    // In this case, we are setting the border of each horizontal bar to be 2px wide
-    elements: {
-      bar: {
-        borderWidth: 2,
-      },
-    },
-    responsive: true,
-    plugins: {
-      legend: {
-        position: "right",
-      },
-      title: {
-        display: true,
-        text: "go f** yourself",
-      },
+    scales: {
+      yAxes: [
+        {
+          stacked: true,
+          ticks: {
+            beginAtZero: true,
+          },
+        },
+      ],
+      xAxes: [
+        {
+          stacked: true,
+        },
+      ],
     },
   };
 
@@ -48,8 +46,19 @@ class GraphComp extends Component {
       <div>
         <div className="header">
           <h1 className="title">Horizontal Bar Chart</h1>
+          {this.props.user.length == 0 ? (
+            <Route path="/followersGraph">
+              <Redirect to="/signsForms/logIn" />;
+            </Route>
+          ) : (
+            ""
+          )}
         </div>
-        <Bar data={this.data} options={this.options} />
+        <div className="row  m-lg-2 p-5">
+          <div className="col-lg-12 w-75 m-lg-12">
+            <Bar data={this.data} options={this.options} />
+          </div>
+        </div>
       </div>
     );
   }

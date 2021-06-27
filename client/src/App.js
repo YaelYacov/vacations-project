@@ -27,6 +27,7 @@ function App() {
           <Route path="/signsForms/logIn" exact component={PasswordField} />
           <Route path="/signsForms/signUp" component={SignUp} />
           <Route path="/followersGraph" component={GraphComp} />
+          {/* <Route path="/followersGraph">{this.props.user[0].isAdmin == 0 ? <Redirect to="/signsForms/logIn" /> : <GraphComp />}</Route>; */}
         </div>
       </BrowserRouter>
     </Provider>
