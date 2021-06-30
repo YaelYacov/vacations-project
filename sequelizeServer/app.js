@@ -19,11 +19,11 @@ UsersVacations.belongsTo(Vacations);
 
 app.use(express.static(path.join(__dirname, "uploads")));
 
-app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
+// app.use(function (req, res, next) {
+//   res.header("Access-Control-Allow-Origin", "*");
+//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//   next();
+// });
 
 var storage = multer.diskStorage({
   // destination
@@ -71,38 +71,6 @@ app.post("/upload", upload.array("uploads[]", 12), function (req, res) {
 app.use((req, res) => {
   res.send("Page Not Found");
 });
-
-// const knex = require("knex")({
-//   client: "sqlite3",
-//   connection: {
-//     filename: "./img",
-//   },
-//   userNullAsDefault: true,
-// });
-
-// app.post("/upload", async (req, res) => {
-//   const { name, data } = req.files.img;
-//   console.log(req.files.img);
-//   if (name && data) {
-//     //  await .findAll({
-//     //    where: {
-//     //      isAdmin: 0,
-//     //    },
-//     //  })
-//     //    .then((result) => {
-//     //      // console.log(result);
-//     //      res.send(result);
-//     //    })
-//     //    .catch((err) => {
-//     //      res.send("error load users");
-//     //    });
-
-//     await knex.insert({ name: name, img: data }).into("img");
-//     res.sendStatus(200);
-//   } else {
-//     res.sendStatus(400);
-//   }
-// });
 
 sequelize
   .sync()

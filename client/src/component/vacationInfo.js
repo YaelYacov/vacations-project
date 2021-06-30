@@ -33,27 +33,27 @@ class VacationsInfo extends Component {
   onChangeFn = (e, currentVac, type) => {
     let currentVacation = this.currentVacation;
     if (type == 1) {
-      let thisCurrentVac = this.props.vacations.find((vacation) => vacation.id == currentVac.id);
-      currentVacation.id = thisCurrentVac.id;
+      let CurrentVac = this.props.vacations.find((vacation) => vacation.id == currentVac.id);
+      currentVacation.id = CurrentVac.id;
       currentVacation[e.target.id] = e.target.value;
 
       if (!currentVacation.destination) {
-        currentVacation.destination = thisCurrentVac.destination;
+        currentVacation.destination = CurrentVac.destination;
       }
       if (!currentVacation.description) {
-        currentVacation.description = thisCurrentVac.description;
+        currentVacation.description = CurrentVac.description;
       }
       if (!currentVacation.initialDate) {
-        currentVacation.initialDate = thisCurrentVac.initialDate;
+        currentVacation.initialDate = CurrentVac.initialDate;
       }
       if (!currentVacation.finalDate) {
-        currentVacation.finalDate = thisCurrentVac.finalDate;
+        currentVacation.finalDate = CurrentVac.finalDate;
       }
       if (!currentVacation.price) {
-        currentVacation.price = thisCurrentVac.price;
+        currentVacation.price = CurrentVac.price;
       }
       if (!currentVacation.img) {
-        currentVacation.img = thisCurrentVac.img;
+        currentVacation.img = CurrentVac.img;
       }
     } else {
       currentVacation[e.target.id] = e.target.value;
@@ -113,23 +113,28 @@ class VacationsInfo extends Component {
   addNewVacBtn = () => (!this.props.newVac ? this.props.updateAddNewVac(true) : this.props.updateAddNewVac(false));
 
   addNewVac = async () => {
+    this.props.updateCurrentVacId(0);
+    console.log(this.props.newImgName);
+
     let addNewVacation = await Api.postRequest(`/vacations/addNewVacation`, {
       destination: this.currentVacation.destination,
       description: this.currentVacation.description,
       initialDate: this.currentVacation.initialDate,
       finalDate: this.currentVacation.finalDate,
       price: this.currentVacation.price,
-      img: this.currentVacation.img,
+      img: this.props.newImgName,
     });
     this.getData();
     console.log(addNewVacation);
+    this.currentVacation = {};
   };
 
   editVac = (vacId) => {
+    this.props.updateCurrentVacId(vacId);
     let findVac = this.props.vacations.find((vac) => vac.id == vacId);
     let changeIsEdit = !findVac.isEditVac ? (findVac.isEditVac = true) : (findVac.isEditVac = false);
     this.props.updateVacations([...this.props.vacations]);
-    console.log(this.props.vacations);
+    // console.log(this.props.vacations);
   };
 
   render() {
@@ -179,6 +184,8 @@ const mapStateToProps = (state) => {
     user: state.user,
     isLoggedIn: state.isLoggedIn,
     newVac: state.newVac,
+    currentVacId: state.currentVacId,
+    newImgName: state.newImgName,
   };
 };
 
@@ -206,6 +213,12 @@ const mapDispatchToProps = (dispatch) => {
     updateAddNewVac(value) {
       dispatch({
         type: "updateAddNewVac",
+        payload: value,
+      });
+    },
+    updateCurrentVacId(value) {
+      dispatch({
+        type: "updateCurrentVacId",
         payload: value,
       });
     },

@@ -1,15 +1,18 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import vacationId from "./vacationForm";
 
 import * as Api from "../api/apiCalls";
 
 class UploadImg extends Component {
-  filesToUpload;
-  componentDidMount = () => {};
+  filesToUpload = {};
+  componentDidMount = () => {
+    console.log(this.props.vacationId);
+  };
 
   fileChangeEvent = (fileInput) => {
     this.filesToUpload = fileInput.target.files;
-    console.log(this.filesToUpload);
+    // console.log(this.filesToUpload);
   };
 
   uploadFile = async () => {
@@ -18,20 +21,30 @@ class UploadImg extends Component {
     if (files) {
       for (let i = 0; i < files.length; i++) {
         formData.append("uploads[]", files[i], files[i]["name"]);
+        // console.log(formData);
       }
-      console.log(formData);
     }
 
     let res = await Api.postRequest("/upload", formData);
     console.log(res);
-    let endOfImageName = res.data ? res.data.map((result) => `${result.filename.substr(-4)}`)[0] : console.log("some went wrong!, reload page");
 
-    console.log(endOfImageName);
+    let endOfImageName = res.data ? res.data.map((result) => `${result.filename.substr(-4)}`)[0] : alert("some went wrong!, reload page");
 
-    let updateImg = !res.data ? alert("error load image, please reload") : endOfImageName == ".png" || endOfImageName == ".jpg" || endOfImageName == "jpeg" || endOfImageName == ".gif" ? await Api.postRequest(`/vacations/updateImg`, { img: `http://www.localhost:5292/${res.data[0].filename}`, id: this.props.currentVacId }) : alert("file is not an image");
-    console.log(res.data[0].filename, `http://www.localhost:5292/${res.data[0].filename}`, res.data[0].size);
-    let getAllVacations = await Api.postRequest(`/vacations/getAllVacations`);
-    this.props.updateVacations([...getAllVacations.data]);
+    // console.log(`http://www.localhost:5292/${res.data[0].filename}`);
+
+    if (!res.data) alert("error load image, please reload");
+    else if (endOfImageName == ".png" || endOfImageName == ".jpg" || endOfImageName == "jpeg" || endOfImageName == ".gif") {
+      if (this.props.currentVacId > 0) {
+        await Api.postRequest(`/vacations/updateImg`, { img: `http://www.localhost:5292/${res.data[0].filename}`, id: this.props.currentVacId });
+        let getAllVacations = await Api.postRequest(`/vacations/getAllVacations`);
+        this.props.updateVacations([...getAllVacations.data]);
+      } else {
+        this.props.updateNewImgName(`http://www.localhost:5292/${res.data[0].filename}`);
+        console.log(this.props.newImgName);
+      }
+    }
+
+    // console.log(res.data[0].filename, `http://www.localhost:5292/${res.data[0].filename}`, res.data[0].size);
   };
 
   render() {
@@ -41,8 +54,6 @@ class UploadImg extends Component {
         <button type="button" className="btn btn-success btn-s m-2 " onClick={() => this.uploadFile()}>
           Upload img
         </button>
-
-        {/* <img src={}></img> */}
       </div>
     );
   }
@@ -51,6 +62,7 @@ const mapStateToProps = (state) => {
   // console.log("AdminPage : ", state);
   return {
     currentVacId: state.currentVacId,
+    newImgName: state.newImgName,
   };
 };
 
@@ -59,6 +71,12 @@ const mapDispatchToProps = (dispatch) => {
     updateVacations(value) {
       dispatch({
         type: "updateVacations",
+        payload: value,
+      });
+    },
+    updateNewImgName(value) {
+      dispatch({
+        type: "updateNewImgName",
         payload: value,
       });
     },

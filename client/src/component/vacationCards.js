@@ -25,7 +25,7 @@ const VacationCards = ({ vacation, addVacToFavoritesFN, editVac, removeVac, onCh
               )}
             </div>
           </div>
-          <img src={vacation.img} className="card-img-top cardImg" />
+          <img src={vacation.img} className="card-img-top cardImg " />
           <div className="card-body">
             <h5 className="card-title">{vacation.destination}</h5>
             <h5 className="card-text"> {vacation.description}</h5>

@@ -69,37 +69,3 @@ exports.updateVacationFollowers = async (req, res) => {
       res.send("error load vacations" + JSON.stringify(err));
     });
 };
-
-// exports.updateIsEditVac = async (req, res) => {
-//   await vacations
-//     .update({ isEditVac: req.body.isEditVac }, { where: { id: req.body.id } })
-//     .then((result) => {
-//       res.send(result);
-//     })
-//     .catch((err) => {
-//       res.send("error load vacations" + JSON.stringify(err));
-//     });
-// };
-
-// exports.AddDelivery = async (req, res) => {
-//   let delivery = req.body;
-
-//   try {
-//     let insertResult = await con.execute(`INSERT INTO deliveries(address_start,address_end,weight,customerName,deliverpersonid) VALUES ('${delivery.collectionAddress}', '${delivery.shippingAddress}',${delivery.weight},'${delivery.name}',1)`);
-//     res.send(insertResult[0]);
-//   } catch (err) {
-//     res.send(err);
-//   }
-// };
-
-// exports.getAllDeliveries = async (req, res) => {
-//   let delivery = req.body;
-//   try {
-//     let result = await con.execute(`SELECT * FROM deliveries`);
-//     res.send(result[0]);
-//   } catch (err) {
-//     res.send(err);
-//   }
-// };
-
-//getAllDeliveries

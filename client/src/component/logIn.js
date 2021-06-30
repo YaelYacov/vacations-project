@@ -1,7 +1,7 @@
 const LogIn = ({ onSubmitFn, onChangeFn }) => {
   return (
-    <div className="row pasPage">
-      <div className="col-12 p-5">
+    <div className="row pasPage pt-5">
+      <div className="col-12 p-5 ">
         <div className="card text-center mx-auto w-25">
           <div className="card-body">
             <label for="mail">Mail:</label>

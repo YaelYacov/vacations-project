@@ -44,7 +44,7 @@ class PasswordField extends Component {
     return (
       <div className="container bgPasPage w-100 ">
         {!this.props.isLoggedIn ? (
-          <div>
+          <div className=" pt-5">
             <LogIn onSubmitFn={this.onSubmitFn} onChangeFn={this.onChangeFn}></LogIn>
             <h5>
               Doesn't have an account yet?

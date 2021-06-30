@@ -13,5 +13,7 @@ code {
   opacity: 0.5;
 }
 .bgPasPage {
+  height: 700px;
   background-image: url("./images/logInPage.jpg");
+  background-repeat: round;
 } */

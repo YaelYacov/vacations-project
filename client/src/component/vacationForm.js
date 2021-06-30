@@ -1,6 +1,5 @@
 import React from "react";
 import UploadImg from "./uploadImg";
-
 const VacationForm = ({ type, vacation, onChangeFn, updateVac, removeVac, addNewVac, editVac }) => {
   let trashIcon =
     type == 1 ? (
@@ -30,20 +29,20 @@ const VacationForm = ({ type, vacation, onChangeFn, updateVac, removeVac, addNew
       </div>
       <UploadImg></UploadImg>
       <div className="mb-3">
-        <input type="text" className="form-control mt-2 " id="destination" onChange={(e) => onChangeFn(e, vacation, type)} placeholder="Change Destination" defaultValue={vacation.destination} />
+        <input type="text" className="form-control mt-2 " id="destination" onChange={(e) => onChangeFn(e, vacation, type)} placeholder="Destination" defaultValue={vacation.destination} />
         <div id="emailHelp" className="form-text"></div>
       </div>
       <div className="mb-3">
-        <input type="text" className="form-control mt-2 " id="description" onChange={(e) => onChangeFn(e, vacation, type)} placeholder="description" defaultValue={vacation.description} />{" "}
+        <input type="text" className="form-control mt-2 " id="description" onChange={(e) => onChangeFn(e, vacation, type)} placeholder="description" defaultValue={vacation.description} />
       </div>
       <div className="mb-3">
-        <input type="number" className="form-control mt-2 " id="price" onChange={(e) => onChangeFn(e, vacation, type)} placeholder="Change Price" defaultValue={vacation.price} />{" "}
+        <input type="number" className="form-control mt-2 " id="price" onChange={(e) => onChangeFn(e, vacation, type)} placeholder="Change Price" defaultValue={vacation.price} />
       </div>
       <div className="mb-3">
-        <input type="datetime-local" className="form-control mt-2 " id="initialDate" onChange={(e) => onChangeFn(e, vacation, type)} placeholder="Change Initial Date" defaultValue={vacation.initialDate} />{" "}
+        <input type="datetime-local" className="form-control mt-2 " id="initialDate" onChange={(e) => onChangeFn(e, vacation, type)} placeholder="Change Initial Date" defaultValue={vacation.initialDate} />
       </div>
       <div className="mb-3">
-        <input type="datetime-local" className="form-control mt-2 " id="finalDate" onChange={(e) => onChangeFn(e, vacation, type)} placeholder="Change Final Date" defaultValue={vacation.finalDate} />{" "}
+        <input type="datetime-local" className="form-control mt-2 " id="finalDate" onChange={(e) => onChangeFn(e, vacation, type)} placeholder="Change Final Date" defaultValue={vacation.finalDate} />
       </div>
       {button}
     </div>

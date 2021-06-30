@@ -46,7 +46,7 @@ class SignUp extends Component {
 
   render() {
     let isLoggedIn = !this.props.isLoggedIn ? (
-      <div className="row">
+      <div className="row bgPasPage">
         <div className="col-3"></div>
         <div className="col-6 p-5">
           <div className="row">
