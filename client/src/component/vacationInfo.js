@@ -10,8 +10,7 @@ class VacationsInfo extends Component {
   socket;
   state = {
     endpoint: "localhost:3004",
-    name1: "",
-    name2: "",
+    ensureVacDeletion: false,
   };
 
   componentDidMount = () => {
@@ -24,10 +23,13 @@ class VacationsInfo extends Component {
       this.removeVacation(id);
     });
 
-    this.socket.on("updateVacFn", () => {
-      console.log("updateVacFn");
-      // this.updateVacFn();
-      this.getData();
+    this.socket.on("updateVacFn", (id) => {
+      let CurrentVac = this.props.vacations.find((vacation) => vacation.id == id);
+      let userMatch = CurrentVac.usersVacations.map((userVac) => userVac.userId);
+      let findUserMatch = userMatch.includes(this.props.user[0].id);
+
+      // console.log("updateVacFn", id, this.props.user[0], userMatch, findUserMatch);
+      if (findUserMatch) this.getData();
     });
   };
 
@@ -82,31 +84,13 @@ class VacationsInfo extends Component {
     }
   };
 
-  updateVacFn = async () => {
-    // let updateVacation = await Api.postRequest(`/vacations/updateVacation`, this.currentVacation);
-    // console.log(updateVacation);
-    // if (updateVacation.data[0] == 1) {
-    // this.getData();
-    // alert(`Updating Vacation id : ${this.currentVacation.id} success`);
-    // this.editVac(this.currentVacation.id);
-    // this.currentVacation.id = 0;
-    // this.currentVacation.destination = "";
-    // this.currentVacation.description = "";
-    // this.currentVacation.initialDate = "";
-    // this.currentVacation.finalDate = "";
-    // this.currentVacation.price = 0;
-    // this.currentVacation.img = "";
-    // } else {
-    //   alert(`Something Went Wrong`);
-    // }
-  };
-
   updateVac = async () => {
     let updateVacation = await Api.postRequest(`/vacations/updateVacation`, this.currentVacation);
 
     if (updateVacation.data[0] == 1) {
       alert(`Updating Vacation id : ${this.currentVacation.id} success`);
       this.editVac(this.currentVacation.id);
+      this.socket.emit("updateVac", this.currentVacation.id);
       this.currentVacation.id = 0;
       this.currentVacation.destination = "";
       this.currentVacation.description = "";
@@ -114,7 +98,6 @@ class VacationsInfo extends Component {
       this.currentVacation.finalDate = "";
       this.currentVacation.price = 0;
       this.currentVacation.img = "";
-      this.socket.emit("updateVac");
     }
   };
 
@@ -149,10 +132,26 @@ class VacationsInfo extends Component {
     this.socket.emit("vacationIdForDeletion", id);
   };
 
+  removeVacationAlertBTN = (deleteOrNot) => {
+    deleteOrNot == 0 ? this.setState({ ensureVacDeletion: true }) : this.setState({ ensureVacDeletion: false });
+  };
+
+  trashAlertButton = () => {
+    return (
+      <div>
+        <button onClick={this.removeVacationAlertBTN(0)}> yes</button> <button onClick={this.removeVacationAlertBTN(1)}> Now</button>
+      </div>
+    );
+  };
+
   removeVacation = async (id) => {
-    let updateDeleteVacation = await Api.postRequest(`/vacations/updateDeleteVacation`, { id: id });
-    console.log(updateDeleteVacation);
-    this.getData();
+    alert("sure you'r gonna delete this vacation?" + this.trashAlertButton());
+
+    if (this.state.ensureVacDeletion == true) {
+      let updateDeleteVacation = await Api.postRequest(`/vacations/updateDeleteVacation`, { id: id });
+      console.log(updateDeleteVacation);
+      this.getData();
+    }
   };
 
   addNewVac = async () => {

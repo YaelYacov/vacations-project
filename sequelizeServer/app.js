@@ -27,9 +27,9 @@ io.on("connection", (socket) => {
     io.sockets.emit("deliverVacationForDeletion", id);
   });
 
-  socket.on("updateVac", () => {
+  socket.on("updateVac", (id) => {
     console.log("updateVac1");
-    io.sockets.emit("updateVacFn");
+    io.sockets.emit("updateVacFn", id);
   });
 
   socket.on("disconnect", () => {
