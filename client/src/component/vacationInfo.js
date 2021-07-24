@@ -1,13 +1,36 @@
 import React, { Component } from "react";
 import * as Api from "../api/apiCalls";
+import socketIOClient from "socket.io-client";
 import { connect } from "react-redux";
 import VacationCards from "../component/vacationCards";
 import VacationFrom from "../component/vacationForm";
+import AddVacBtnComp from "../component/addVac";
 
 class VacationsInfo extends Component {
+  socket;
+  state = {
+    endpoint: "localhost:3004",
+    name1: "",
+    name2: "",
+  };
+
   componentDidMount = () => {
     this.getData();
+
+    this.socket = socketIOClient(this.state.endpoint);
+
+    this.socket.on("deliverVacationForDeletion", (id) => {
+      console.log(this.props.vacations);
+      this.removeVacation(id);
+    });
+
+    this.socket.on("updateVacFn", () => {
+      console.log("updateVacFn");
+      // this.updateVacFn();
+      this.getData();
+    });
   };
+
   currentVacFavoriteId = -1;
 
   currentVacation = {
@@ -19,7 +42,6 @@ class VacationsInfo extends Component {
     finalDate: "",
     price: 0,
   };
-
   likedVacArr = [];
 
   getData = async () => {
@@ -60,10 +82,29 @@ class VacationsInfo extends Component {
     }
   };
 
+  updateVacFn = async () => {
+    // let updateVacation = await Api.postRequest(`/vacations/updateVacation`, this.currentVacation);
+    // console.log(updateVacation);
+    // if (updateVacation.data[0] == 1) {
+    // this.getData();
+    // alert(`Updating Vacation id : ${this.currentVacation.id} success`);
+    // this.editVac(this.currentVacation.id);
+    // this.currentVacation.id = 0;
+    // this.currentVacation.destination = "";
+    // this.currentVacation.description = "";
+    // this.currentVacation.initialDate = "";
+    // this.currentVacation.finalDate = "";
+    // this.currentVacation.price = 0;
+    // this.currentVacation.img = "";
+    // } else {
+    //   alert(`Something Went Wrong`);
+    // }
+  };
+
   updateVac = async () => {
     let updateVacation = await Api.postRequest(`/vacations/updateVacation`, this.currentVacation);
+
     if (updateVacation.data[0] == 1) {
-      this.getData();
       alert(`Updating Vacation id : ${this.currentVacation.id} success`);
       this.editVac(this.currentVacation.id);
       this.currentVacation.id = 0;
@@ -73,8 +114,7 @@ class VacationsInfo extends Component {
       this.currentVacation.finalDate = "";
       this.currentVacation.price = 0;
       this.currentVacation.img = "";
-    } else {
-      alert(`Something Went Wrong`);
+      this.socket.emit("updateVac");
     }
   };
 
@@ -105,12 +145,15 @@ class VacationsInfo extends Component {
     }
   };
 
-  removeVac = async (id) => {
-    let updateDeleteVacation = await Api.postRequest(`/vacations/updateDeleteVacation`, { id: id });
-    this.getData();
+  removeVac = (id) => {
+    this.socket.emit("vacationIdForDeletion", id);
   };
 
-  addNewVacBtn = () => (!this.props.newVac ? this.props.updateAddNewVac(true) : this.props.updateAddNewVac(false));
+  removeVacation = async (id) => {
+    let updateDeleteVacation = await Api.postRequest(`/vacations/updateDeleteVacation`, { id: id });
+    console.log(updateDeleteVacation);
+    this.getData();
+  };
 
   addNewVac = async () => {
     this.props.updateCurrentVacId(0);
@@ -138,17 +181,6 @@ class VacationsInfo extends Component {
   };
 
   render() {
-    let isAdmin =
-      this.props.user[0].isAdmin == 0 ? (
-        ""
-      ) : (
-        <div lassName="col-4">
-          <button className="btn btn-primary m-3" onClick={() => this.addNewVacBtn()}>
-            {!this.props.newVac ? "Add New Vacation" : "Close New Vacation Form"}
-          </button>
-        </div>
-      );
-
     let openFormVac = this.props.user[0].isAdmin == 0 ? "" : !this.props.newVac ? "" : <VacationFrom type={0} addNewVac={this.addNewVac} vacation={this.currentVacation} onChangeFn={this.onChangeFn}></VacationFrom>;
     return (
       <div>
@@ -156,7 +188,9 @@ class VacationsInfo extends Component {
           <div className="col-4  p-5">
             <h3>Hello {this.props.user[0].name}😊</h3>
           </div>
-          <div className="col-4">{isAdmin}</div>
+          <div className="col-4">
+            <AddVacBtnComp></AddVacBtnComp>
+          </div>
         </div>
         <div className="row">
           <div className="col-4"></div>
@@ -164,11 +198,11 @@ class VacationsInfo extends Component {
           <div className="col-4"></div>
         </div>
         <div className="row p-3">
-          {this.props.vacations.map((vacation, index) => {
+          {this.props.vacations.map((vacation, i) => {
             // console.log(vacation.usersVacations);
             return (
               <div className="p-3 col-xl-3 col-md-6 col-sm-6">
-                <VacationCards user={this.props.user[0]} addVacToFavoritesFN={this.addVacToFavoritesFN} vacation={vacation} removeVac={this.removeVac} onChangeFn={this.onChangeFn} updateVac={this.updateVac} editVac={this.editVac}></VacationCards>
+                <VacationCards user={this.props.user[0]} key={i} addVacToFavoritesFN={this.addVacToFavoritesFN} vacation={vacation} removeVac={this.removeVac} onChangeFn={this.onChangeFn} updateVac={this.updateVac} editVac={this.editVac}></VacationCards>
               </div>
             );
           })}
@@ -186,6 +220,7 @@ const mapStateToProps = (state) => {
     newVac: state.newVac,
     currentVacId: state.currentVacId,
     newImgName: state.newImgName,
+    isVacDeleted: state.isVacDeleted,
   };
 };
 
@@ -219,6 +254,12 @@ const mapDispatchToProps = (dispatch) => {
     updateCurrentVacId(value) {
       dispatch({
         type: "updateCurrentVacId",
+        payload: value,
+      });
+    },
+    updateIsVacDeleted(value) {
+      dispatch({
+        type: "updateIsVacDeleted",
         payload: value,
       });
     },

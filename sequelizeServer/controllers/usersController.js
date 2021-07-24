@@ -18,11 +18,6 @@ exports.getAllUsers = async (req, res) => {
 };
 
 exports.getUserByMail = async (req, res, next) => {
-  // let usersInTable = await UsersVacationModels.findAll({ where: { isDeleted: 0 } });
-  // usersInTable
-
-  //
-
   await Users.findAll({
     where: {
       mail: req.body.mail,
@@ -33,10 +28,12 @@ exports.getUserByMail = async (req, res, next) => {
     // include: [{ model: UsersVacationModels, attributes: ["vacationId"], where: { isDeleted: 0 } }],
   })
     .then((users) => {
-      console.log(users);
+      console.log(req.body);
       res.send(users);
     })
     .catch((err) => {
+      console.log(req.body);
+
       res.send("error load users :)", err);
     });
 };

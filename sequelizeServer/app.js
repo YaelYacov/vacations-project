@@ -1,7 +1,41 @@
 const express = require("express");
 var multer = require("multer");
 var path = require("path");
+const http = require("http");
+
 const app = express();
+
+var server = http.createServer(app);
+
+var io = require("socket.io")(server, {
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"],
+  },
+  transports: ["websocket", "polling", "flashsocket"],
+});
+server.listen("3004", () => {
+  console.log("Server Running on Port 3004...");
+});
+
+io.on("connection", (socket) => {
+  // console.log(socket.id);
+  console.log("user Connected", socket.id);
+
+  socket.on("vacationIdForDeletion", (id) => {
+    console.log("vacationIdForDeletion", id);
+    io.sockets.emit("deliverVacationForDeletion", id);
+  });
+
+  socket.on("updateVac", () => {
+    console.log("updateVac1");
+    io.sockets.emit("updateVacFn");
+  });
+
+  socket.on("disconnect", () => {
+    console.log("USER DISCONNECTED");
+  });
+});
 
 var mysql = require("mysql2");
 
@@ -18,12 +52,6 @@ Vacations.hasMany(UsersVacations);
 UsersVacations.belongsTo(Vacations);
 
 app.use(express.static(path.join(__dirname, "uploads")));
-
-// app.use(function (req, res, next) {
-//   res.header("Access-Control-Allow-Origin", "*");
-//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//   next();
-// });
 
 var storage = multer.diskStorage({
   // destination

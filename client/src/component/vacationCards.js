@@ -1,7 +1,7 @@
 import React from "react";
 import VacationFrom from "../component/vacationForm";
 
-const VacationCards = ({ vacation, addVacToFavoritesFN, editVac, removeVac, onChangeFn, updateVac, user }) => {
+const VacationCards = ({ vacation, key, addVacToFavoritesFN, editVac, removeVac, onChangeFn, updateVac, user }) => {
   let ifLikedClass = "";
   let filteredVacs = [];
 
@@ -11,7 +11,7 @@ const VacationCards = ({ vacation, addVacToFavoritesFN, editVac, removeVac, onCh
   } else ifLikedClass = "fab fa-gratipay float-start m-3";
 
   return (
-    <div className="card ">
+    <div className="card " key={key}>
       {!vacation.isEditVac ? (
         <div>
           <div className="row">

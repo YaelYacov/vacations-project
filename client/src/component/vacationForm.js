@@ -24,9 +24,7 @@ const VacationForm = ({ type, vacation, onChangeFn, updateVac, removeVac, addNew
   return (
     <div className="col-12">
       {trashIcon}
-      <div className="mb-3">
-        <img src={vacation.img} className="card-img-top cardImg"></img>
-      </div>
+      <div className="mb-3">{type == 1 ? <img src={vacation.img} className="card-img-top cardImg"></img> : ""}</div>
       <UploadImg></UploadImg>
       <div className="mb-3">
         <input type="text" className="form-control mt-2 " id="destination" onChange={(e) => onChangeFn(e, vacation, type)} placeholder="Destination" defaultValue={vacation.destination} />
