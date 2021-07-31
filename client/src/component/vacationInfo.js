@@ -10,11 +10,11 @@ class VacationsInfo extends Component {
   socket;
   state = {
     endpoint: "localhost:3004",
-    ensureVacDeletion: false,
   };
 
   componentDidMount = () => {
     this.getData();
+    console.log(this.props.user[0]);
 
     this.socket = socketIOClient(this.state.endpoint);
 
@@ -28,8 +28,7 @@ class VacationsInfo extends Component {
       let userMatch = CurrentVac.usersVacations.map((userVac) => userVac.userId);
       let findUserMatch = userMatch.includes(this.props.user[0].id);
 
-      // console.log("updateVacFn", id, this.props.user[0], userMatch, findUserMatch);
-      if (findUserMatch) this.getData();
+      if (findUserMatch || this.props.user[0].isAdmin == 1) this.getData();
     });
   };
 
@@ -132,26 +131,10 @@ class VacationsInfo extends Component {
     this.socket.emit("vacationIdForDeletion", id);
   };
 
-  removeVacationAlertBTN = (deleteOrNot) => {
-    deleteOrNot == 0 ? this.setState({ ensureVacDeletion: true }) : this.setState({ ensureVacDeletion: false });
-  };
-
-  trashAlertButton = () => {
-    return (
-      <div>
-        <button onClick={this.removeVacationAlertBTN(0)}> yes</button> <button onClick={this.removeVacationAlertBTN(1)}> Now</button>
-      </div>
-    );
-  };
-
   removeVacation = async (id) => {
-    alert("sure you'r gonna delete this vacation?" + this.trashAlertButton());
-
-    if (this.state.ensureVacDeletion == true) {
-      let updateDeleteVacation = await Api.postRequest(`/vacations/updateDeleteVacation`, { id: id });
-      console.log(updateDeleteVacation);
-      this.getData();
-    }
+    let updateDeleteVacation = await Api.postRequest(`/vacations/updateDeleteVacation`, { id: id });
+    console.log(updateDeleteVacation);
+    this.getData();
   };
 
   addNewVac = async () => {
@@ -176,13 +159,35 @@ class VacationsInfo extends Component {
     let findVac = this.props.vacations.find((vac) => vac.id == vacId);
     let changeIsEdit = !findVac.isEditVac ? (findVac.isEditVac = true) : (findVac.isEditVac = false);
     this.props.updateVacations([...this.props.vacations]);
-    // console.log(this.props.vacations);
   };
 
   render() {
     let openFormVac = this.props.user[0].isAdmin == 0 ? "" : !this.props.newVac ? "" : <VacationFrom type={0} addNewVac={this.addNewVac} vacation={this.currentVacation} onChangeFn={this.onChangeFn}></VacationFrom>;
     return (
       <div>
+        <div>
+          <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div className="modal-dialog">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h5 className="modal-title" id="exampleModalLabel">
+                    Modal title
+                  </h5>
+                  <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div className="modal-body">...</div>
+                <div className="modal-footer">
+                  <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
+                    Close
+                  </button>
+                  <button type="button" class="btn btn-primary">
+                    Save changes
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div className="row ">
           <div className="col-4  p-5">
             <h3>Hello {this.props.user[0].name}😊</h3>
@@ -219,7 +224,6 @@ const mapStateToProps = (state) => {
     newVac: state.newVac,
     currentVacId: state.currentVacId,
     newImgName: state.newImgName,
-    isVacDeleted: state.isVacDeleted,
   };
 };
 
@@ -253,12 +257,6 @@ const mapDispatchToProps = (dispatch) => {
     updateCurrentVacId(value) {
       dispatch({
         type: "updateCurrentVacId",
-        payload: value,
-      });
-    },
-    updateIsVacDeleted(value) {
-      dispatch({
-        type: "updateIsVacDeleted",
         payload: value,
       });
     },

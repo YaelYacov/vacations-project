@@ -17,3 +17,12 @@ code {
   background-image: url("./images/logInPage.jpg");
   background-repeat: round;
 } */
+
+h5,
+p {
+  display: inline;
+}
+
+.card-text {
+  padding-left: 0px;
+}

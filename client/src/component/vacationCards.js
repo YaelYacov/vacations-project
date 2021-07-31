@@ -10,6 +10,9 @@ const VacationCards = ({ vacation, key, addVacToFavoritesFN, editVac, removeVac,
     ifLikedClass = filteredVacs.length > 0 ? "fas fa-heart  float-start m-3" : "fab fa-gratipay  float-start m-3";
   } else ifLikedClass = "fab fa-gratipay float-start m-3";
 
+  let slicedFinalDate = vacation.finalDate.slice(0, 16);
+  let slicedInitialDate = vacation.initialDate.slice(0, 16);
+
   return (
     <div className="card " key={key}>
       {!vacation.isEditVac ? (
@@ -26,13 +29,27 @@ const VacationCards = ({ vacation, key, addVacToFavoritesFN, editVac, removeVac,
             </div>
           </div>
           <img src={vacation.img} className="card-img-top cardImg " />
-          <div className="card-body">
-            <h5 className="card-title">{vacation.destination}</h5>
-            <h5 className="card-text"> {vacation.description}</h5>
-            <h5 className="card-title"> From : {vacation.initialDate} </h5>
-            <h5 className="card-title"> Until : {vacation.finalDate} </h5>
-            <h5 className="card-title">${vacation.price} </h5>
-            <h5 className="card-title">Followers : {vacation.usersVacations.length} </h5>
+          <div className="card-body ">
+            <h5> Destination : </h5>
+            <p className="card-title">{vacation.destination}</p>
+            <br></br>
+            <h5 className="card-text"> Description : </h5>
+            <p>{vacation.description}</p>
+            <br></br>
+
+            <h5> From : </h5>
+            <p>{slicedInitialDate.replace("T", " ")} </p>
+            <br></br>
+
+            <h5> Until : </h5>
+            <p>{slicedFinalDate.replace("T", " ")} </p>
+            <br></br>
+
+            <h5> Followers : </h5>
+            <p>{vacation.usersVacations.length}</p>
+            <br></br>
+            <h5> Price </h5>
+            <p>${vacation.price}</p>
           </div>
         </div>
       ) : (

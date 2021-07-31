@@ -3,6 +3,19 @@ var multer = require("multer");
 var path = require("path");
 const http = require("http");
 
+var mysql = require("mysql2");
+
+const cors = require("cors");
+const bodyParser = require("body-parser");
+const fileUpload = require("express-fileupload");
+
+const Users = require("./models/usersModels");
+const Vacations = require("./models/vacationModels");
+const UsersVacations = require("./models/usersVacationModels");
+
+const Sequelize = require("sequelize");
+const sequelize = require("./utils/database");
+
 const app = express();
 
 var server = http.createServer(app);
@@ -37,16 +50,6 @@ io.on("connection", (socket) => {
   });
 });
 
-var mysql = require("mysql2");
-
-const cors = require("cors");
-const bodyParser = require("body-parser");
-const fileUpload = require("express-fileupload");
-
-const Users = require("./models/usersModels");
-const Vacations = require("./models/vacationModels");
-const UsersVacations = require("./models/usersVacationModels");
-
 Users.hasMany(UsersVacations);
 Vacations.hasMany(UsersVacations);
 UsersVacations.belongsTo(Vacations);
@@ -64,9 +67,6 @@ var storage = multer.diskStorage({
 });
 
 var upload = multer({ storage: storage });
-
-const Sequelize = require("sequelize");
-const sequelize = require("./utils/database");
 
 app.use(
   bodyParser.urlencoded({
@@ -103,8 +103,9 @@ app.use((req, res) => {
 sequelize
   .sync()
   .then((result) => {
+    // console.log("listening on port 5292", result);
     app.listen(5292);
   })
   .catch((err) => {
-    // logger.log("error", "ERRR " + JSON.stringify(err))
+    // logger.log("error", "ERRR " + err);
   });

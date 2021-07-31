@@ -4,7 +4,7 @@ const VacationForm = ({ type, vacation, onChangeFn, updateVac, removeVac, addNew
   let trashIcon =
     type == 1 ? (
       <div>
-        <i className="fas fa-edit float-start m-3" onClick={() => editVac(vacation.id)}></i> <i className="fas fa-trash-alt float-end  m-3" onClick={() => removeVac(vacation.id)}></i>
+        <i className="fas fa-edit float-start m-3" onClick={() => editVac(vacation.id)}></i> <i className="fas fa-trash-alt float-end  m-3 " data-bs-toggle="modal" data-bs-target="#exampleModal" onClick={() => removeVac(vacation.id)}></i>
       </div>
     ) : (
       ""

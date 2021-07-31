@@ -5,7 +5,6 @@ const initialState = {
   newVac: false,
   currentVacId: 0,
   newImgName: "",
-  isVacDeleted: 0,
 };
 
 function rootReducer(state = initialState, action) {
@@ -29,9 +28,6 @@ function rootReducer(state = initialState, action) {
       break;
     case "updateNewImgName":
       state = { ...state, newImgName: action.payload };
-      break;
-    case "updateIsVacDeleted":
-      state = { ...state, isVacDeleted: action.payload };
       break;
   }
   return state;

@@ -15,7 +15,7 @@ class Nav extends Component {
       <nav className="navbar navbar-expand-lg navbar-light bg-dark">
         <div className="container-fluid">
           <div className="row">
-            <div className={`col-6 ${this.props.user.length == 0 ? "w-100" : "w-50"} `}>
+            <div className="col-6  w-100">
               <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
               </button>
@@ -50,12 +50,11 @@ class Nav extends Component {
                 </ul>
               </div>
             </div>
-            {this.props.user.length == 0 ? (
+            {/* {this.props.user.length == 0 ? (
               ""
             ) : (
               <div className={`col-6 ${this.props.user.length == 0 ? "w-100" : "w-50"} `}>
                 <div className="container-fluid">
-                  {/* <form className="d-flex"> */}
                   <div className="row ">
                     <div className="col-6 w-75 ">
                       <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" onChange={(e) => this.onChangeFN(e)} />
@@ -66,10 +65,10 @@ class Nav extends Component {
                       </button>
                     </div>
                   </div>
-                  {/* </form> */}
+                  
                 </div>
               </div>
-            )}
+            )} */}
           </div>
         </div>
       </nav>
