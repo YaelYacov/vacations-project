@@ -8,6 +8,7 @@ import { BrowserRouter } from "react-router-dom";
 import { Route, Link } from "react-router-dom";
 import VacationsInfo from "./component/vacationInfo";
 import GraphComp from "./pages/graph";
+import AddVacBtnComp from "./component/addVac";
 
 import Redux from "../src/redux/Reducers";
 import { createStore } from "redux";
@@ -27,11 +28,12 @@ function App() {
           <Route path="/signsForms/logIn" exact component={PasswordField} />
           <Route path="/signsForms/signUp" component={SignUp} />
           <Route path="/followersGraph" component={GraphComp} />
+          <Route path="/newVacation" component={AddVacBtnComp} />
           {/* <Route path="/followersGraph">{this.props.user[0].isAdmin == 0 ? <Redirect to="/signsForms/logIn" /> : <GraphComp />}</Route>; */}
         </div>
       </BrowserRouter>
     </Provider>
   );
 }
- 
+
 export default App;

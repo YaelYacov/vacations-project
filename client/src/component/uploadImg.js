@@ -1,18 +1,17 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import vacationId from "./vacationForm";
 
 import * as Api from "../api/apiCalls";
 
 class UploadImg extends Component {
   filesToUpload = {};
   componentDidMount = () => {
-    console.log(this.props.vacationId);
+    console.log(this.props.currentVacId);
   };
 
   fileChangeEvent = (fileInput) => {
     this.filesToUpload = fileInput.target.files;
-    // console.log(this.filesToUpload);
+    console.log(this.filesToUpload);
   };
 
   uploadFile = async () => {
@@ -28,9 +27,9 @@ class UploadImg extends Component {
     let res = await Api.postRequest("/upload", formData);
     console.log(res);
 
-    let endOfImageName = res.data ? res.data.map((result) => `${result.filename.substr(-4)}`)[0] : alert("some went wrong!, reload page");
+    let endOfImageName = res.data ? res.data.map((result) => `${result.filename.substr(-4)}`)[0] : alert("some went wrong!, Please reload the page");
 
-    // console.log(`http://www.localhost:5292/${res.data[0].filename}`);
+    console.log(`http://www.localhost:5292/${res.data[0].filename}`);
 
     if (!res.data) alert("error load image, please reload");
     else if (endOfImageName == ".png" || endOfImageName == ".jpg" || endOfImageName == "jpeg" || endOfImageName == ".gif") {

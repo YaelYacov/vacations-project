@@ -45,6 +45,11 @@ io.on("connection", (socket) => {
     io.sockets.emit("updateVacFn", id);
   });
 
+  socket.on("updateFavorites", (usersVacations) => {
+    console.log("updateFavorites", usersVacations);
+    io.sockets.emit("sendToClientUpdateFavorites", usersVacations);
+  });
+
   socket.on("disconnect", () => {
     console.log("USER DISCONNECTED");
   });

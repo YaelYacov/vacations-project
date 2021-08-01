@@ -58,14 +58,3 @@ exports.updateImg = async (req, res) => {
       res.send("error load vacations" + JSON.stringify(err));
     });
 };
-
-exports.updateVacationFollowers = async (req, res) => {
-  await vacations
-    .update({ followers: req.body.followers }, { where: { id: req.body.id } })
-    .then((result) => {
-      res.send(result);
-    })
-    .catch((err) => {
-      res.send("error load vacations" + JSON.stringify(err));
-    });
-};

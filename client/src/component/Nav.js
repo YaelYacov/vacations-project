@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Route, Link } from "react-router-dom";
+import { Route, Link, NavLink } from "react-router-dom";
 
 class Nav extends Component {
   changeIsLoggedIn = () => {
-    if (this.props.isLoggedIn == true) {
+    if (this.props.isLoggedIn === true) {
       this.props.updateIsLoggedIn(false);
       this.props.updateUser([]);
     }
@@ -36,9 +36,9 @@ class Nav extends Component {
                       <Link to="/signsForms/logIn">log in</Link>
                     </a>
                   </li>
-                  {this.props.user.length == 0 ? (
+                  {this.props.user.length === 0 ? (
                     ""
-                  ) : this.props.user[0].isAdmin == 0 ? (
+                  ) : this.props.user[0].isAdmin === 0 ? (
                     ""
                   ) : (
                     <li className="nav-item">
@@ -53,7 +53,7 @@ class Nav extends Component {
             {/* {this.props.user.length == 0 ? (
               ""
             ) : (
-              <div className={`col-6 ${this.props.user.length == 0 ? "w-100" : "w-50"} `}>
+              <div className={`col-6 ${this.props.user.length === 0 ? "w-100" : "w-50"} `}>
                 <div className="container-fluid">
                   <div className="row ">
                     <div className="col-6 w-75 ">

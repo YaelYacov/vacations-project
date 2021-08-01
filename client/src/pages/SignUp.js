@@ -11,16 +11,13 @@ class SignUp extends Component {
   };
 
   componentDidMount = () => {
-    if (this.props.isLoggedIn == true) {
+    if (this.props.isLoggedIn === true) {
       this.props.updateIsLoggedIn(false);
       this.props.updateUser([]);
     }
   };
 
-  onChangeFN = (event) => {
-    this.currentUser[event.target.id] = event.target.value;
-    console.log(this.currentUser);
-  };
+  onChangeFN = (event) => (this.currentUser[event.target.id] = event.target.value);
 
   afterInsertFn = async () => {
     let getUserByMail = await Api.postRequest(`/users/getUserByMail`, { mail: this.currentUser.mail, password: this.currentUser.password });
@@ -31,7 +28,7 @@ class SignUp extends Component {
   insertNewUser = async () => {
     let insertNewUser = await Api.postRequest(`/users/addNewUser`, this.currentUser);
     console.log(insertNewUser);
-    if (insertNewUser.data.id == 0) {
+    if (insertNewUser.data.id === 0) {
       return alert("Mail is already in use");
     } else if (insertNewUser.data.id > 0) {
       return this.afterInsertFn();
@@ -39,7 +36,7 @@ class SignUp extends Component {
   };
 
   onSubmit = () => {
-    if (this.currentUser.name == "" || this.currentUser.password == "" || this.currentUser.mail == "") {
+    if (this.currentUser.name === "" || this.currentUser.password === "" || this.currentUser.mail === "") {
       return alert("please please fill all the fields below");
     } else this.insertNewUser();
   };

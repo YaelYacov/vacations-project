@@ -33,11 +33,6 @@ const vacations = sequelize.define("vacations", {
     allowNull: false,
     defaultValue: 0,
   },
-  followers: {
-    type: Sequelize.INTEGER(250),
-    allowNull: false,
-    defaultValue: 0,
-  },
   isDeleted: {
     type: Sequelize.INTEGER(11),
     allowNull: false,

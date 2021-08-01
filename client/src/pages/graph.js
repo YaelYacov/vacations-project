@@ -1,15 +1,17 @@
 import React, { Component } from "react";
+import * as GetAllVacations from "../getAllVacations/getAllVacation";
 import { connect } from "react-redux";
 import { Route, Redirect } from "react-router-dom";
-
+import socketIOClient from "socket.io-client";
 import { Bar } from "react-chartjs-2";
 
 class GraphComp extends Component {
-  componentDidMount = () => {
-    console.log(this.props.user.length == 0);
-    // && this.props.user[0].isAdmin == 1
+  componentDidMount = () => {};
 
-    console.log(this.props.vacations.filter((vacation) => vacation.usersVacations.length > 0).map((vac) => vac.destination));
+  getData = async () => {
+    let getAllVacations = await GetAllVacations.getData();
+    console.log(getAllVacations.data);
+    this.props.updateVacations([...getAllVacations.data]);
   };
 
   data = {
@@ -24,20 +26,23 @@ class GraphComp extends Component {
   };
 
   options = {
-    scales: {
-      yAxes: [
-        {
-          stacked: true,
-          ticks: {
-            beginAtZero: true,
-          },
-        },
-      ],
-      xAxes: [
-        {
-          stacked: true,
-        },
-      ],
+    indexAxis: "x",
+    // Elements options apply to all of the options unless overridden in a dataset
+    // In this case, we are setting the border of each horizontal bar to be 2px wide
+    elements: {
+      bar: {
+        borderWidth: 1,
+      },
+    },
+    // responsive: true,
+    plugins: {
+      legend: {
+        position: "top",
+      },
+      title: {
+        display: true,
+        text: "Vacations Stars",
+      },
     },
   };
 
@@ -46,7 +51,7 @@ class GraphComp extends Component {
       <div>
         <div className="header">
           <h1 className="title">Horizontal Bar Chart</h1>
-          {this.props.user.length == 0 ? (
+          {this.props.user.length === 0 ? (
             <Route path="/followersGraph">
               <Redirect to="/signsForms/logIn" />;
             </Route>

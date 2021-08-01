@@ -7,6 +7,4 @@ router.post("/updateVacation", vacationController.updateVacation);
 router.post("/updateDeleteVacation", vacationController.updateDeleteVacation);
 router.post("/updateImg", vacationController.updateImg);
 router.post("/addNewVacation", vacationController.addNewVacation);
-router.post("/updateVacationFollowers", vacationController.updateVacationFollowers);
-// router.post("/updateIsEditVac", vacationController.updateIsEditVac);
 module.exports = router;

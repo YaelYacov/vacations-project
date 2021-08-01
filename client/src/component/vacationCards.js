@@ -1,12 +1,12 @@
 import React from "react";
 import VacationFrom from "../component/vacationForm";
 
-const VacationCards = ({ vacation, key, addVacToFavoritesFN, editVac, removeVac, onChangeFn, updateVac, user }) => {
+const VacationCards = ({ vacation, addVacToFavoritesFN, editVac, removeVac, onChangeFn, updateVac, user }) => {
   let ifLikedClass = "";
   let filteredVacs = [];
 
   if (vacation.usersVacations.length > 0) {
-    filteredVacs = vacation.usersVacations.filter((userVac) => userVac.userId == user.id);
+    filteredVacs = vacation.usersVacations.filter((userVac) => userVac.userId === user.id);
     ifLikedClass = filteredVacs.length > 0 ? "fas fa-heart  float-start m-3" : "fab fa-gratipay  float-start m-3";
   } else ifLikedClass = "fab fa-gratipay float-start m-3";
 
@@ -14,12 +14,12 @@ const VacationCards = ({ vacation, key, addVacToFavoritesFN, editVac, removeVac,
   let slicedInitialDate = vacation.initialDate.slice(0, 16);
 
   return (
-    <div className="card " key={key}>
+    <div className="card ">
       {!vacation.isEditVac ? (
         <div>
           <div className="row">
             <div className="col-12 ">
-              {user.isAdmin == 0 ? (
+              {user.isAdmin === 0 ? (
                 <i className={ifLikedClass} onClick={() => addVacToFavoritesFN(vacation.id)}></i>
               ) : (
                 <div>
