@@ -135,7 +135,7 @@ class VacationsInfo extends Component {
     console.log(updateDeleteVacation);
     this.getData();
   };
-
+  ///
   addNewVac = async () => {
     this.props.updateCurrentVacId(0);
     console.log(this.props.newImgName);
@@ -152,7 +152,7 @@ class VacationsInfo extends Component {
     console.log(addNewVacation);
     this.currentVacation = {};
   };
-
+  ///
   editVac = (vacId) => {
     this.props.updateCurrentVacId(vacId);
     let findVac = this.props.vacations.find((vac) => vac.id === vacId);
@@ -179,7 +179,6 @@ class VacationsInfo extends Component {
         </div>
         <div className="row p-3">
           {this.props.vacations.map((vacation) => {
-            // console.log(vacation.usersVacations);
             return (
               <div className="p-3 col-xl-3 col-md-6 col-sm-6">
                 <VacationCards user={this.props.user[0]} addVacToFavoritesFN={this.addVacToFavoritesFN} vacation={vacation} removeVac={this.removeVac} onChangeFn={this.onChangeFn} updateVac={this.updateVac} editVac={this.editVac}></VacationCards>

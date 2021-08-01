@@ -10,6 +10,8 @@ class Nav extends Component {
     }
   };
 
+  addNewVacBtn = () => (!this.props.newVac ? this.props.updateAddNewVac(true) : this.props.updateAddNewVac(false));
+
   render() {
     return (
       <nav className="navbar navbar-expand-lg navbar-light bg-dark">
@@ -21,11 +23,6 @@ class Nav extends Component {
               </button>
               <div className="collapse navbar-collapse" id="navbarNav">
                 <ul className="navbar-nav">
-                  {/* <li className="nav-item">
-                        <a className="nav-link active" aria-current="page">
-                          <Link to="/">Home</Link>
-                        </a>
-                      </li> */}
                   <li className="nav-item">
                     <a className="nav-link">
                       <Link to="/signsForms/signUp">Sign Up</Link>
@@ -33,7 +30,7 @@ class Nav extends Component {
                   </li>
                   <li className="nav-item">
                     <a className="nav-link " onClick={() => this.changeIsLoggedIn()}>
-                      <Link to="/signsForms/logIn">log in</Link>
+                      <Link to="/signsForms/logIn">log In</Link>
                     </a>
                   </li>
                   {this.props.user.length === 0 ? (
@@ -43,32 +40,25 @@ class Nav extends Component {
                   ) : (
                     <li className="nav-item">
                       <a className="nav-link">
-                        <Link to="/followersGraph">followers Graph</Link>
+                        <Link to="/followersGraph">Followers Graph</Link>
+                      </a>
+                    </li>
+                  )}
+                  {this.props.user.length === 0 ? (
+                    ""
+                  ) : this.props.user[0].isAdmin === 0 ? (
+                    ""
+                  ) : (
+                    <li className="nav-item">
+                      <a onClick={() => this.addNewVacBtn()}>
+                        {!this.props.newVac ? "Add New Vacation" : "Close New Vacation Form"}
+                        <Link to="/newVacation"> {!this.props.newVac ? "Add New Vacation" : "Close New Vacation Form"}</Link>
                       </a>
                     </li>
                   )}
                 </ul>
               </div>
             </div>
-            {/* {this.props.user.length == 0 ? (
-              ""
-            ) : (
-              <div className={`col-6 ${this.props.user.length === 0 ? "w-100" : "w-50"} `}>
-                <div className="container-fluid">
-                  <div className="row ">
-                    <div className="col-6 w-75 ">
-                      <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" onChange={(e) => this.onChangeFN(e)} />
-                    </div>
-                    <div className="col-6 w-25">
-                      <button className="btn btn-outline-success" type="submit">
-                        Search
-                      </button>
-                    </div>
-                  </div>
-                  
-                </div>
-              </div>
-            )} */}
           </div>
         </div>
       </nav>
@@ -81,6 +71,7 @@ const mapStateToProps = (state) => {
   return {
     user: state.user,
     isLoggedIn: state.isLoggedIn,
+    newVac: state.newVac,
   };
 };
 
@@ -95,6 +86,12 @@ const mapDispatchToProps = (dispatch) => {
     updateIsLoggedIn(value) {
       dispatch({
         type: "updateIsLoggedIn",
+        payload: value,
+      });
+    },
+    updateAddNewVac(value) {
+      dispatch({
+        type: "updateAddNewVac",
         payload: value,
       });
     },
