@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import * as GetAllVacations from "../getAllVacations/getAllVacation";
+
 import { connect } from "react-redux";
 
 import * as Api from "../api/apiCalls";
@@ -29,7 +31,7 @@ class UploadImg extends Component {
     else if (endOfImageName == ".png" || endOfImageName == ".jpg" || endOfImageName == "jpeg" || endOfImageName == ".gif") {
       if (this.props.currentVacId > 0) {
         await Api.postRequest(`/vacations/updateImg`, { img: `http://www.localhost:5292/${res.data[0].filename}`, id: this.props.currentVacId });
-        let getAllVacations = await Api.postRequest(`/vacations/getAllVacations`);
+        let getAllVacations = await GetAllVacations.getData();
         this.props.updateVacations([...getAllVacations.data]);
       } else {
         this.props.updateNewImgName(`http://www.localhost:5292/${res.data[0].filename}`);

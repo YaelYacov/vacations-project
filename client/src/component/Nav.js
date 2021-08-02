@@ -15,7 +15,7 @@ class Nav extends Component {
 
   render() {
     return (
-      <nav className="navbar navbar-expand-lg navbar-light bg-dark">
+      <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
         <div className="container-fluid">
           <div className="row">
             <div className="col-6  w-100">
@@ -68,9 +68,8 @@ class Nav extends Component {
                     ""
                   ) : (
                     <li className="nav-item">
-                      <a className="nav-link" nClick={() => this.addNewVacBtn()}>
-                        {" "}
-                        {!this.props.newVac ? "Add New Vacation" : "Close New Vacation Form"}
+                      <a className="nav-link">
+                        <Link onClick={() => this.addNewVacBtn()}> {!this.props.newVac ? "Add New Vacation" : "Close New Vacation Form"}</Link>
                       </a>
                     </li>
                   )}

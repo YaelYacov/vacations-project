@@ -5,7 +5,7 @@ const LogIn = ({ onSubmitFn, onChangeFn }) => {
         <div className="row">
           <h1>Log In</h1>
         </div>
-        <div className="card text-center mx-auto w-25">
+        <div className="card text-center mx-auto w-25 bgPasPage">
           <div className="card-body">
             <label htmlFor="mail">Mail:</label>
             <div className="input-group">
@@ -19,7 +19,7 @@ const LogIn = ({ onSubmitFn, onChangeFn }) => {
             </div>
 
             <button className="btn btn-primary m-3" onClick={() => onSubmitFn()}>
-              Go somewhere
+              Log In
             </button>
           </div>
         </div>

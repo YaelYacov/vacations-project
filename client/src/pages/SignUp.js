@@ -43,13 +43,13 @@ class SignUp extends Component {
 
   render() {
     let isLoggedIn = !this.props.isLoggedIn ? (
-      <div className="row bgPasPage">
+      <div className="row ">
         <div className="col-3"></div>
         <div className="col-6 p-5">
           <div className="row">
             <h1>Sign Up</h1>
           </div>
-          <div className="card p-5">
+          <div className="card p-5 bgPasPage">
             <div className="row">
               <div className="form-group inputTXT">
                 <input type="text" className="form-control mt-2 " id="name" onChange={(e) => this.onChangeFN(e)} placeholder="Please Enter Full Name" />

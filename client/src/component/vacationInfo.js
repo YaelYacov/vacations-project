@@ -150,6 +150,7 @@ class VacationsInfo extends Component {
     });
     this.getData();
     this.currentVacation = {};
+    this.props.updateAddNewVac(false);
   };
 
   editVac = (vacId) => {

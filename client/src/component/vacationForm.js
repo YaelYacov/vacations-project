@@ -22,7 +22,7 @@ const VacationForm = ({ type, vacation, onChangeFn, updateVac, removeVac, addNew
     );
 
   return (
-    <div className="col-12">
+    <div className="col-12 ">
       {trashIcon}
       <div className="mb-3">{type === 1 ? <img src={vacation.img} className="card-img-top cardImg"></img> : ""}</div>
       <UploadImg></UploadImg>

@@ -10,8 +10,8 @@ const VacationCards = ({ vacation, addVacToFavoritesFN, editVac, removeVac, onCh
     ifLikedClass = filteredVacs.length > 0 ? "fas fa-heart  float-start m-3" : "fab fa-gratipay  float-start m-3";
   } else ifLikedClass = "fab fa-gratipay float-start m-3";
 
-  let slicedFinalDate = vacation.finalDate.slice(0, 16);
-  let slicedInitialDate = vacation.initialDate.slice(0, 16);
+  let slicedInitialDate = vacation.initialDate == null ? "" : vacation.initialDate.slice(0, 16);
+  let slicedFinalDate = vacation.finalDate == null ? "" : vacation.finalDate.slice(0, 16);
 
   return (
     <div className="card ">
