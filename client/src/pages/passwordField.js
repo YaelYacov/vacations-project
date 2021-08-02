@@ -25,8 +25,6 @@ class PasswordField extends Component {
     this.props.updateUser([...getUserByMail]);
     this.props.updateIsLoggedIn(true);
     this.currentUserId.id = getUserByMail[0].id;
-    // localStorage.setItem("user", JSON.stringify({ ...this.props.user }));
-    // console.log(localStorage.getItem("user"));
   };
 
   isLoggedIn = async () => {

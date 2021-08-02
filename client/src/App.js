@@ -5,7 +5,7 @@ import SignUp from "./pages/SignUp";
 import PasswordField from "./pages/passwordField";
 import Nav from "../src/component/Nav";
 import { BrowserRouter } from "react-router-dom";
-import { Route, Link } from "react-router-dom";
+import { Route } from "react-router-dom";
 import VacationsInfo from "./component/vacationInfo";
 import GraphComp from "./pages/graph";
 

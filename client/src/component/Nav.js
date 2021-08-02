@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Route, Link, NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 class Nav extends Component {
   componentDidMount = () => {};
@@ -68,8 +68,9 @@ class Nav extends Component {
                     ""
                   ) : (
                     <li className="nav-item">
-                      <a className="nav-link">
-                        <Link onClick={() => this.addNewVacBtn()}> {!this.props.newVac ? "Add New Vacation" : "Close New Vacation Form"}</Link>
+                      <a className="nav-link" nClick={() => this.addNewVacBtn()}>
+                        {" "}
+                        {!this.props.newVac ? "Add New Vacation" : "Close New Vacation Form"}
                       </a>
                     </li>
                   )}

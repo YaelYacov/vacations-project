@@ -5,9 +5,7 @@ import * as Api from "../api/apiCalls";
 
 class UploadImg extends Component {
   filesToUpload = {};
-  componentDidMount = () => {
-    console.log(this.props.currentVacId);
-  };
+  componentDidMount = () => {};
 
   fileChangeEvent = (fileInput) => {
     this.filesToUpload = fileInput.target.files;

@@ -1,11 +1,13 @@
 import React, { Component } from "react";
+import { Route, Redirect } from "react-router-dom";
+
 import * as Api from "../api/apiCalls";
+
 import * as GetAllVacations from "../getAllVacations/getAllVacation";
 import socketIOClient from "socket.io-client";
 import { connect } from "react-redux";
 import VacationCards from "../component/vacationCards";
 import VacationFrom from "../component/vacationForm";
-import AddVacBtnComp from "../component/addVac";
 
 class VacationsInfo extends Component {
   socket;
@@ -16,7 +18,6 @@ class VacationsInfo extends Component {
   componentDidMount = () => {
     this.getData();
     this.socket = socketIOClient(this.state.endpoint);
-    console.log(window.location.pathname);
     this.socket.on("deliverVacationForDeletion", (id) => {
       console.log(this.props.vacations);
       this.removeVacation(id);
@@ -135,12 +136,11 @@ class VacationsInfo extends Component {
     console.log(updateDeleteVacation);
     this.getData();
   };
-  ///
+
   addNewVac = async () => {
     this.props.updateCurrentVacId(0);
-    console.log(this.props.newImgName);
 
-    let addNewVacation = await Api.postRequest(`/vacations/addNewVacation`, {
+    await Api.postRequest(`/vacations/addNewVacation`, {
       destination: this.currentVacation.destination,
       description: this.currentVacation.description,
       initialDate: this.currentVacation.initialDate,
@@ -149,10 +149,9 @@ class VacationsInfo extends Component {
       img: this.props.newImgName,
     });
     this.getData();
-    console.log(addNewVacation);
     this.currentVacation = {};
   };
-  ///
+
   editVac = (vacId) => {
     this.props.updateCurrentVacId(vacId);
     let findVac = this.props.vacations.find((vac) => vac.id === vacId);
@@ -161,29 +160,36 @@ class VacationsInfo extends Component {
   };
 
   render() {
-    let openVacForm = this.props.user[0].isAdmin === 0 ? "" : !this.props.newVac ? "" : <VacationFrom type={0} addNewVac={this.addNewVac} vacation={this.currentVacation} onChangeFn={this.onChangeFn}></VacationFrom>;
     return (
       <div>
-        <div className="row ">
-          <div className="col-4  p-5">
-            <h3>Hello {this.props.user[0].name}😊</h3>
-          </div>
-          <div className="col-4">{/* <AddVacBtnComp></AddVacBtnComp> */}</div>
-        </div>
-        <div className="row">
-          <div className="col-4"></div>
-          <div className="col-4">{openVacForm}</div>
-          <div className="col-4"></div>
-        </div>
-        <div className="row p-3">
-          {this.props.vacations.map((vacation) => {
-            return (
-              <div className="p-3 col-xl-3 col-md-6 col-sm-6">
-                <VacationCards user={this.props.user[0]} addVacToFavoritesFN={this.addVacToFavoritesFN} vacation={vacation} removeVac={this.removeVac} onChangeFn={this.onChangeFn} updateVac={this.updateVac} editVac={this.editVac}></VacationCards>
+        {this.props.user.length === 0 ? (
+          <Route path="/vacations">
+            <Redirect to="/signsForms/logIn" />;
+          </Route>
+        ) : (
+          <div>
+            <div className="row ">
+              <div className="col-4  p-5">
+                <h3>Hello {this.props.user[0].name}😊</h3>
               </div>
-            );
-          })}
-        </div>
+              <div className="col-4"></div>
+            </div>
+            <div className="row">
+              <div className="col-4"></div>
+              <div className="col-4">{this.props.user[0].isAdmin === 0 ? "" : !this.props.newVac ? "" : <VacationFrom type={0} addNewVac={this.addNewVac} vacation={this.currentVacation} onChangeFn={this.onChangeFn}></VacationFrom>}</div>
+              <div className="col-4"></div>
+            </div>
+            <div className="row p-3">
+              {this.props.vacations.map((vacation) => {
+                return (
+                  <div className="p-3 col-xl-3 col-md-6 col-sm-6">
+                    <VacationCards user={this.props.user[0]} addVacToFavoritesFN={this.addVacToFavoritesFN} vacation={vacation} removeVac={this.removeVac} onChangeFn={this.onChangeFn} updateVac={this.updateVac} editVac={this.editVac}></VacationCards>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
       </div>
     );
   }

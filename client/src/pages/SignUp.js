@@ -49,25 +49,27 @@ class SignUp extends Component {
           <div className="row">
             <h1>Sign Up</h1>
           </div>
-          <div className="row">
-            <div className="form-group inputTXT">
-              <input type="text" className="form-control mt-2 " id="name" onChange={(e) => this.onChangeFN(e)} placeholder="Please Enter Full Name" />
-            </div>
-          </div>
-
-          <div className="row">
-            <div className="form-group ">
-              <input type="text" className="form-control mt-2 " id="password" onChange={(e) => this.onChangeFN(e)} placeholder="Please Enter Password" />
-            </div>
-          </div>
-          <div className="row">
-            <div className="form-group inputTXT">
-              <input type="text" className="form-control mt-2 " id="mail" onChange={(e) => this.onChangeFN(e)} placeholder="Please Enter Mail" />
+          <div className="card p-5">
+            <div className="row">
+              <div className="form-group inputTXT">
+                <input type="text" className="form-control mt-2 " id="name" onChange={(e) => this.onChangeFN(e)} placeholder="Please Enter Full Name" />
+              </div>
             </div>
 
-            <button className="btn btn-primary mt-3" onClick={() => this.onSubmit()}>
-              Submit
-            </button>
+            <div className="row">
+              <div className="form-group ">
+                <input type="text" className="form-control mt-2 " id="password" onChange={(e) => this.onChangeFN(e)} placeholder="Please Enter Password" />
+              </div>
+            </div>
+            <div className="row">
+              <div className="form-group inputTXT">
+                <input type="text" className="form-control mt-2 " id="mail" onChange={(e) => this.onChangeFN(e)} placeholder="Please Enter Mail" />
+              </div>
+
+              <button className="btn btn-primary mt-3" onClick={() => this.onSubmit()}>
+                Submit
+              </button>
+            </div>
           </div>
         </div>
         <div className="col-3"></div>
@@ -85,7 +87,6 @@ class SignUp extends Component {
 }
 
 const mapStateToProps = (state) => {
-  // console.log("State : ", state);
   return {
     user: state.user,
     isLoggedIn: state.isLoggedIn,
