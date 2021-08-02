@@ -43,7 +43,7 @@ class UploadImg extends Component {
     return (
       <div className="mt-3 card ">
         <input className="p-3" id="img" name="img" type="file" onChange={($event) => this.fileChangeEvent($event)} multiple></input>
-        <button type="button" className="btn btn-success btn-s m-2 " onClick={() => this.uploadFile()}>
+        <button type="button" className="btn btn-secondary btn-s m-2 " onClick={() => this.uploadFile()}>
           Upload img
         </button>
       </div>

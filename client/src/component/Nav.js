@@ -3,6 +3,9 @@ import { connect } from "react-redux";
 import { Route, Link, NavLink } from "react-router-dom";
 
 class Nav extends Component {
+  componentDidMount = () => {
+    console.log(window.location);
+  };
   changeIsLoggedIn = () => {
     if (this.props.isLoggedIn === true) {
       this.props.updateIsLoggedIn(false);
@@ -40,9 +43,26 @@ class Nav extends Component {
                   ) : (
                     <li className="nav-item">
                       <a className="nav-link">
-                        <Link to="/followersGraph">Followers Graph</Link>
+                        <Link to="/followersGraph">Followers Graph </Link>
                       </a>
                     </li>
+                  )}
+                  {this.props.user.length === 0 ? (
+                    ""
+                  ) : this.props.user[0].isAdmin === 1 ? (
+                    <li className="nav-item">
+                      <a className="nav-link">
+                        <Link to="/vacations">Vacations</Link>
+                      </a>
+                    </li>
+                  ) : this.props.user[0].isAdmin && window.location.pathname === "/vacations" ? (
+                    <li className="nav-item">
+                      <a className="nav-link">
+                        <Link to="/followersGraph">Followers Graph </Link>
+                      </a>
+                    </li>
+                  ) : (
+                    ""
                   )}
                   {this.props.user.length === 0 ? (
                     ""
@@ -50,8 +70,7 @@ class Nav extends Component {
                     ""
                   ) : (
                     <li className="nav-item">
-                      <a onClick={() => this.addNewVacBtn()}>
-                        {!this.props.newVac ? "Add New Vacation" : "Close New Vacation Form"}
+                      <a className="nav-link" onClick={() => this.addNewVacBtn()}>
                         <Link to="/newVacation"> {!this.props.newVac ? "Add New Vacation" : "Close New Vacation Form"}</Link>
                       </a>
                     </li>

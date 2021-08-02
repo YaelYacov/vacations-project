@@ -1,10 +1,11 @@
 import React, { Component } from "react";
+import { Route, Link, Redirect } from "react-router-dom";
+
 import * as Api from "../api/apiCalls";
 import { connect } from "react-redux";
 import LogIn from "../component/logIn";
 import VacationInfo from "../component/vacationInfo";
 import UploadImg from "../component/uploadImg";
-import { Link } from "react-router-dom";
 
 class PasswordField extends Component {
   componentDidMount = () => {};
@@ -56,7 +57,9 @@ class PasswordField extends Component {
         ) : (
           <div>
             <div className="row">
-              <VacationInfo></VacationInfo>
+              <Route path="/signsForms/logIn">
+                <Redirect to="/vacations" />;
+              </Route>
             </div>
           </div>
         )}

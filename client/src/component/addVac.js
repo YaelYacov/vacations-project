@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Route, Link, Redirect } from "react-router-dom";
+
 import VacationFrom from "../component/vacationForm";
 import * as Api from "../api/apiCalls";
 
@@ -39,16 +41,9 @@ class AddVacBtnComp extends Component {
   render() {
     return (
       <div>
-        {this.props.user[0].isAdmin == 0 ? (
-          ""
-        ) : (
-          <div lassName="col-4">
-            <button className="btn btn-primary m-3" onClick={() => this.addNewVacBtn()}>
-              {!this.props.newVac ? "Add New Vacation" : "Close New Vacation Form"}
-            </button>
-          </div>
-        )}
         {this.props.user[0].isAdmin === 0 ? "" : !this.props.newVac ? "" : <VacationFrom type={0} addNewVac={this.addNewVac} vacation={this.currentVacation} onChangeFn={this.onChangeFn}></VacationFrom>}
+
+        {this.props.newVac == false ? <Redirect to="/vacations" /> : ""}
       </div>
     );
   }

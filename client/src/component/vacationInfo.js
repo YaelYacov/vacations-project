@@ -16,7 +16,7 @@ class VacationsInfo extends Component {
   componentDidMount = () => {
     this.getData();
     this.socket = socketIOClient(this.state.endpoint);
-
+    console.log(window.location.pathname);
     this.socket.on("deliverVacationForDeletion", (id) => {
       console.log(this.props.vacations);
       this.removeVacation(id);
@@ -168,9 +168,7 @@ class VacationsInfo extends Component {
           <div className="col-4  p-5">
             <h3>Hello {this.props.user[0].name}😊</h3>
           </div>
-          <div className="col-4">
-            <AddVacBtnComp></AddVacBtnComp>
-          </div>
+          <div className="col-4">{/* <AddVacBtnComp></AddVacBtnComp> */}</div>
         </div>
         <div className="row">
           <div className="col-4"></div>

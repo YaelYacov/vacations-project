@@ -5,7 +5,6 @@ export let getData = async () => {
   //   console.log(getAllVacations);
 
   if (getAllVacations.statusText === "OK" && getAllVacations.status === 200) {
-    console.log(getAllVacations);
     return getAllVacations;
   }
 };

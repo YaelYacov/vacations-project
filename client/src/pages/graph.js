@@ -6,7 +6,9 @@ import socketIOClient from "socket.io-client";
 import { Bar } from "react-chartjs-2";
 
 class GraphComp extends Component {
-  componentDidMount = () => {};
+  componentDidMount = () => {
+    console.log(window.location.pathname);
+  };
 
   getData = async () => {
     let getAllVacations = await GetAllVacations.getData();
