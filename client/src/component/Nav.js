@@ -3,9 +3,7 @@ import { connect } from "react-redux";
 import { Route, Link, NavLink } from "react-router-dom";
 
 class Nav extends Component {
-  componentDidMount = () => {
-    console.log(window.location);
-  };
+  componentDidMount = () => {};
   changeIsLoggedIn = () => {
     if (this.props.isLoggedIn === true) {
       this.props.updateIsLoggedIn(false);
@@ -70,8 +68,8 @@ class Nav extends Component {
                     ""
                   ) : (
                     <li className="nav-item">
-                      <a className="nav-link" onClick={() => this.addNewVacBtn()}>
-                        <Link to="/newVacation"> {!this.props.newVac ? "Add New Vacation" : "Close New Vacation Form"}</Link>
+                      <a className="nav-link">
+                        <Link onClick={() => this.addNewVacBtn()}> {!this.props.newVac ? "Add New Vacation" : "Close New Vacation Form"}</Link>
                       </a>
                     </li>
                   )}
