@@ -25,9 +25,14 @@ code {
   color: white;
 }
 
-/* .card {
+.shadowCard {
   border: 2px solid;
-} */
+  box-shadow: 4px 4px gray;
+}
+
+.shadowCard:hover {
+  box-shadow: 10px 10px gray;
+}
 
 .opacity {
   opacity: 0.8;

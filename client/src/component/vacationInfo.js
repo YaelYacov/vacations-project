@@ -25,7 +25,6 @@ class VacationsInfo extends Component {
 
     this.socket.on("updateVacFn", (id) => {
       let CurrentVac = this.props.vacations.find((vacation) => vacation.id === id);
-      console.log(CurrentVac);
       if (CurrentVac) {
         let userMatch = CurrentVac.usersVacations.map((userVac) => userVac.userId);
         let findUserMatch = userMatch.includes(this.props.user[0].id);
