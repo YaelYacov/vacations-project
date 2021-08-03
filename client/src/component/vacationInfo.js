@@ -25,10 +25,13 @@ class VacationsInfo extends Component {
 
     this.socket.on("updateVacFn", (id) => {
       let CurrentVac = this.props.vacations.find((vacation) => vacation.id === id);
-      let userMatch = CurrentVac.usersVacations.map((userVac) => userVac.userId);
-      let findUserMatch = userMatch.includes(this.props.user[0].id);
+      console.log(CurrentVac);
+      if (CurrentVac) {
+        let userMatch = CurrentVac.usersVacations.map((userVac) => userVac.userId);
+        let findUserMatch = userMatch.includes(this.props.user[0].id);
 
-      if (findUserMatch || this.props.user[0].isAdmin === 1) this.getData();
+        if (findUserMatch || this.props.user[0].isAdmin === 1) this.getData();
+      }
     });
   };
 
@@ -79,6 +82,7 @@ class VacationsInfo extends Component {
     } else {
       currentVacation[e.target.id] = e.target.value;
     }
+    console.log(e.target.value);
   };
 
   updateVac = async () => {

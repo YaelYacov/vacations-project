@@ -43,36 +43,39 @@ class SignUp extends Component {
 
   render() {
     let isLoggedIn = !this.props.isLoggedIn ? (
-      <div className="row ">
-        <div className="col-3"></div>
-        <div className="col-6 p-5">
-          <div className="row">
-            <h1>Sign Up</h1>
-          </div>
-          <div className="card p-5 bgPasPage">
-            <div className="row">
-              <div className="form-group inputTXT">
-                <input type="text" className="form-control mt-2 " id="name" onChange={(e) => this.onChangeFN(e)} placeholder="Please Enter Full Name" />
-              </div>
+      <div className="container mt-0">
+        <img className="bgImg" src="http://www.localhost:5292/pexels-valdemaras-d-3824620.jpg"></img>
+        <div className="row p-5">
+          <div className="col-3"></div>
+          <div className="col-6 pt-5">
+            <div className="row pt-5">
+              <h1 className="relativePos">Sign Up</h1>
             </div>
-
-            <div className="row">
-              <div className="form-group ">
-                <input type="text" className="form-control mt-2 " id="password" onChange={(e) => this.onChangeFN(e)} placeholder="Please Enter Password" />
-              </div>
-            </div>
-            <div className="row">
-              <div className="form-group inputTXT">
-                <input type="text" className="form-control mt-2 " id="mail" onChange={(e) => this.onChangeFN(e)} placeholder="Please Enter Mail" />
+            <div className="card opacity p-5 ">
+              <div className="row">
+                <div className="form-group inputTXT">
+                  <input type="text" className="form-control mt-2 " id="name" onChange={(e) => this.onChangeFN(e)} placeholder="Please Enter Full Name" />
+                </div>
               </div>
 
-              <button className="btn btn-primary mt-3" onClick={() => this.onSubmit()}>
-                Submit
-              </button>
+              <div className="row">
+                <div className="form-group ">
+                  <input type="text" className="form-control mt-2 " id="password" onChange={(e) => this.onChangeFN(e)} placeholder="Please Enter Password" />
+                </div>
+              </div>
+              <div className="row">
+                <div className="form-group inputTXT">
+                  <input type="text" className="form-control mt-2 " id="mail" onChange={(e) => this.onChangeFN(e)} placeholder="Please Enter Mail" />
+                </div>
+
+                <button className="btn btn-primary mt-3" onClick={() => this.onSubmit()}>
+                  Submit
+                </button>
+              </div>
             </div>
           </div>
+          <div className="col-3"></div>
         </div>
-        <div className="col-3"></div>
       </div>
     ) : (
       <VacationsInfo></VacationsInfo>
@@ -80,7 +83,7 @@ class SignUp extends Component {
 
     return (
       <div className="container">
-        <div className="row pt-5 mx-auto">{isLoggedIn}</div>
+        <div className="row mx-auto">{isLoggedIn}</div>
       </div>
     );
   }

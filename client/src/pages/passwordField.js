@@ -42,10 +42,11 @@ class PasswordField extends Component {
   render() {
     return (
       <div className="container  w-100 ">
+        <img className="bgImg" src="http://www.localhost:5292/pexels-valdemaras-d-3824620.jpg"></img>
         {!this.props.isLoggedIn ? (
-          <div className=" pt-5">
+          <div className=" pt-5 relativePos">
             <LogIn onSubmitFn={this.onSubmitFn} onChangeFn={this.onChangeFn}></LogIn>
-            <h5>
+            <h5 className="colorWhite">
               Doesn't have an account yet?
               <a className="nav-link">
                 <Link to="/signsForms/signUp">Sign Up</Link>
