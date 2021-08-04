@@ -41,6 +41,7 @@ exports.updateVacation = async (req, res) => {
   await vacations
     .update({ destination: req.body.destination, description: req.body.description, img: req.body.img, initialDate: req.body.initialDate, finalDate: req.body.finalDate, price: req.body.price }, { where: { id: req.body.id } })
     .then((result) => {
+      console.log(req.body.initialDate, req.body.finalDate);
       res.send(result);
     })
     .catch((err) => {

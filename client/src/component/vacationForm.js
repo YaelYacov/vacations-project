@@ -37,10 +37,10 @@ const VacationForm = ({ type, vacation, onChangeFn, updateVac, removeVac, addNew
         <input type="number" className="form-control mt-2 " id="price" onChange={(e) => onChangeFn(e, vacation, type)} placeholder="Change Price" defaultValue={vacation.price} />
       </div>
       <div className="mb-3">
-        <input type="datetime-local" className="form-control mt-2 " id="initialDate" onChange={(e) => onChangeFn(e, vacation, type)} placeholder="Change Initial Date" defaultValue={vacation.initialDate} />
+        <input type="date" className="form-control mt-2 " id="initialDate" onChange={(e) => onChangeFn(e, vacation, type)} placeholder="Change Initial Date" defaultValue={vacation.initialDate} />
       </div>
       <div className="mb-3">
-        <input type="datetime-local" className="form-control mt-2 " id="finalDate" onChange={(e) => onChangeFn(e, vacation, type)} placeholder="Change Final Date" defaultValue={vacation.finalDate} />
+        <input type="date" className="form-control mt-2 " id="finalDate" onChange={(e) => onChangeFn(e, vacation, type)} placeholder="Change Final Date" defaultValue={vacation.finalDate} />
       </div>
       {button}
     </div>

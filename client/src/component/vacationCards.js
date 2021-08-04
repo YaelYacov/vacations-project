@@ -39,10 +39,13 @@ const VacationCards = ({ vacation, addVacToFavoritesFN, editVac, removeVac, onCh
 
             <h5> From : </h5>
             <p>{slicedInitialDate.replace("T", " ")} </p>
+            {/* <p>{vacation.initialDate}</p> */}
+
             <br></br>
 
             <h5> Until : </h5>
             <p>{slicedFinalDate.replace("T", " ")} </p>
+            {/* <p>{vacation.finalDate}</p> */}
             <br></br>
 
             <h5> Followers : </h5>

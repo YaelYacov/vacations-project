@@ -23,17 +23,21 @@ class UploadImg extends Component {
         // console.log(formData);
       }
     }
-
     let res = await Api.postRequest("/upload", formData);
     let endOfImageName = res.data ? res.data.map((result) => `${result.filename.substr(-4)}`)[0] : alert("some went wrong!, Please reload the page");
-
+    console.log(`http://www.localhost:5292/${res.data[0].filename}`);
+    // console.log(res);
     if (!res.data) alert("error load image, please reload");
     else if (endOfImageName == ".png" || endOfImageName == ".jpg" || endOfImageName == "jpeg" || endOfImageName == ".gif") {
       if (this.props.currentVacId > 0) {
         await Api.postRequest(`/vacations/updateImg`, { img: `http://www.localhost:5292/${res.data[0].filename}`, id: this.props.currentVacId });
         let getAllVacations = await GetAllVacations.getData();
-        this.props.updateVacations([...getAllVacations.data]);
+        if (getAllVacations) {
+          console.log(getAllVacations);
+          this.props.updateVacations([...getAllVacations.data]);
+        }
       } else {
+        console.log("else");
         this.props.updateNewImgName(`http://www.localhost:5292/${res.data[0].filename}`);
       }
     }

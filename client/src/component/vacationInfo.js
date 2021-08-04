@@ -18,6 +18,7 @@ class VacationsInfo extends Component {
   componentDidMount = () => {
     this.getData();
     this.socket = socketIOClient(this.state.endpoint);
+
     this.socket.on("deliverVacationForDeletion", (id) => {
       console.log(this.props.vacations);
       this.removeVacation(id);
@@ -25,6 +26,7 @@ class VacationsInfo extends Component {
 
     this.socket.on("updateVacFn", (id) => {
       let CurrentVac = this.props.vacations.find((vacation) => vacation.id === id);
+      console.log(this.props.vacations);
       if (CurrentVac) {
         let userMatch = CurrentVac.usersVacations.map((userVac) => userVac.userId);
         let findUserMatch = userMatch.includes(this.props.user[0].id);
@@ -85,6 +87,8 @@ class VacationsInfo extends Component {
   };
 
   updateVac = async () => {
+    console.log(this.currentVacation.initialDate, this.currentVacation.finalDate);
+
     let updateVacation = await Api.postRequest(`/vacations/updateVacation`, this.currentVacation);
 
     if (updateVacation.data[0] === 1) {
@@ -117,7 +121,7 @@ class VacationsInfo extends Component {
   };
 
   addVacToFavoritesFN = async (vacationId) => {
-    this.socket.emit("updateFavorites", vacationId);
+    // this.socket.emit("updateFavorites", vacationId);
     let getAllUsersVacations = await Api.postRequest(`/usersVacations/getAllUsersVacations`);
     let ifUserExistsInTable = getAllUsersVacations.data.find((userVac) => userVac.vacationId == vacationId && userVac.userId == this.props.user[0].id); //if not exist = undefined;
     if (ifUserExistsInTable == undefined) {
@@ -160,6 +164,8 @@ class VacationsInfo extends Component {
     this.props.updateCurrentVacId(vacId);
     let findVac = this.props.vacations.find((vac) => vac.id === vacId);
     let changeIsEdit = !findVac.isEditVac ? (findVac.isEditVac = true) : (findVac.isEditVac = false);
+    // this.getData();
+    console.log(this.props.vacations);
     this.props.updateVacations([...this.props.vacations]);
   };
 
@@ -184,16 +190,14 @@ class VacationsInfo extends Component {
               <div className="col-4"></div>
             </div>
             <div className="row p-3 vacInfoConImg">
-              {/* <img src="http://www.localhost:5292/download.jpg" className="vacInfoConImg " /> */}
-              {/* <div className="col-xl-3"></div> */}
               {this.props.vacations.map((vacation) => {
+                // console.log(vacation.initialDate, vacation.finalDate);
                 return (
                   <div className="relativePos cardSize p-3 m-4 col-xl-4 col-md-6 col-sm-6">
                     <VacationCards user={this.props.user[0]} addVacToFavoritesFN={this.addVacToFavoritesFN} vacation={vacation} removeVac={this.removeVac} onChangeFn={this.onChangeFn} updateVac={this.updateVac} editVac={this.editVac}></VacationCards>
                   </div>
                 );
               })}
-              {/* <div className="col-xl-3"></div> */}
             </div>
           </div>
         )}

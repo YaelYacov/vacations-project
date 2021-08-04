@@ -41,14 +41,12 @@ io.on("connection", (socket) => {
   });
 
   socket.on("updateVac", (id) => {
-    console.log("updateVac1");
     io.sockets.emit("updateVacFn", id);
   });
 
-  socket.on("updateFavorites", (usersVacations) => {
-    console.log("updateFavorites", usersVacations);
-    io.sockets.emit("sendToClientUpdateFavorites", usersVacations);
-  });
+  // socket.on("updateFavorites", (usersVacations) => {
+  //   io.sockets.emit("sendToClientUpdateFavorites", usersVacations);
+  // });
 
   socket.on("disconnect", () => {
     console.log("USER DISCONNECTED");
