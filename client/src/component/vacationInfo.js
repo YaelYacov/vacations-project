@@ -171,7 +171,7 @@ class VacationsInfo extends Component {
             <Redirect to="/signsForms/logIn" />;
           </Route>
         ) : (
-          <div>
+          <div className="container ">
             <div className="row ">
               <div className="col-4  p-5">
                 <h3>Hello {this.props.user[0].name}😊</h3>
@@ -183,14 +183,17 @@ class VacationsInfo extends Component {
               <div className="col-4">{this.props.user[0].isAdmin === 0 ? "" : !this.props.newVac ? "" : <VacationFrom type={0} addNewVac={this.addNewVac} vacation={this.currentVacation} onChangeFn={this.onChangeFn}></VacationFrom>}</div>
               <div className="col-4"></div>
             </div>
-            <div className="row p-3">
+            <div className="row p-3 vacInfoConImg">
+              {/* <img src="http://www.localhost:5292/download.jpg" className="vacInfoConImg " /> */}
+              {/* <div className="col-xl-3"></div> */}
               {this.props.vacations.map((vacation) => {
                 return (
-                  <div className="p-3 col-xl-3 col-md-6 col-sm-6">
+                  <div className="relativePos cardSize p-3 m-4 col-xl-4 col-md-6 col-sm-6">
                     <VacationCards user={this.props.user[0]} addVacToFavoritesFN={this.addVacToFavoritesFN} vacation={vacation} removeVac={this.removeVac} onChangeFn={this.onChangeFn} updateVac={this.updateVac} editVac={this.editVac}></VacationCards>
                   </div>
                 );
               })}
+              {/* <div className="col-xl-3"></div> */}
             </div>
           </div>
         )}

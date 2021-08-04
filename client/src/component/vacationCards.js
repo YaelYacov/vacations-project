@@ -14,7 +14,7 @@ const VacationCards = ({ vacation, addVacToFavoritesFN, editVac, removeVac, onCh
   let slicedFinalDate = vacation.finalDate == null ? "" : vacation.finalDate.slice(0, 16);
 
   return (
-    <div className="card shadowCard">
+    <div className="card opacity cardShadow">
       {!vacation.isEditVac ? (
         <div>
           <div className="row">

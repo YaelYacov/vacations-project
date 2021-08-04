@@ -25,17 +25,22 @@ code {
   color: white;
 }
 
-.shadowCard {
-  border: 2px solid;
+.cardShadow {
+  /* border: 2px solid; */
   box-shadow: 4px 4px gray;
 }
 
-.shadowCard:hover {
-  box-shadow: 10px 10px gray;
+.cardShadow:hover {
+  box-shadow: 12px 12px gray;
+}
+
+.aTagStyle {
+  color: blue;
+  border-bottom: 1px solid blue;
 }
 
 .opacity {
-  opacity: 0.8;
+  opacity: 0.9;
 }
 
 h5,
@@ -45,4 +50,20 @@ p {
 
 .card-text {
   padding-left: 0px;
+}
+
+.cardSize {
+  width: 20%;
+}
+
+.vacInfoConImg {
+  background-image: url("http://www.localhost:5292/nature-background_1818564.jpg");
+  background-size: contain;
+  position: absolute;
+  width: 75%;
+}
+
+.hoverBorder:hover {
+  border: 4px solid rgb(172, 165, 173);
+  border-radius: 9px;
 }

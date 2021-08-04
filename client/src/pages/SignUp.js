@@ -51,24 +51,24 @@ class SignUp extends Component {
             <div className="row pt-5">
               <h1 className="relativePos">Sign Up</h1>
             </div>
-            <div className="card opacity p-5 ">
+            <div className=" opacity p-5 ">
               <div className="row">
                 <div className="form-group inputTXT">
-                  <input type="text" className="form-control mt-2 " id="name" onChange={(e) => this.onChangeFN(e)} placeholder="Please Enter Full Name" />
+                  <input type="text" className="form-control mt-2 hoverBorder" id="name" onChange={(e) => this.onChangeFN(e)} placeholder="Please Enter Full Name" />
                 </div>
               </div>
 
               <div className="row">
                 <div className="form-group ">
-                  <input type="text" className="form-control mt-2 " id="password" onChange={(e) => this.onChangeFN(e)} placeholder="Please Enter Password" />
+                  <input type="text" className="form-control mt-2 hoverBorder" id="password" onChange={(e) => this.onChangeFN(e)} placeholder="Please Enter Password" />
                 </div>
               </div>
               <div className="row">
                 <div className="form-group inputTXT">
-                  <input type="text" className="form-control mt-2 " id="mail" onChange={(e) => this.onChangeFN(e)} placeholder="Please Enter Mail" />
+                  <input type="text" className="form-control mt-2 hoverBorder" id="mail" onChange={(e) => this.onChangeFN(e)} placeholder="Please Enter Mail" />
                 </div>
 
-                <button className="btn btn-primary mt-3" onClick={() => this.onSubmit()}>
+                <button className="btn btn-dark mt-3 hoverBorder" onClick={() => this.onSubmit()}>
                   Submit
                 </button>
               </div>
