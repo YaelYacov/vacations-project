@@ -16,7 +16,7 @@ const VacationForm = ({ type, vacation, onChangeFn, updateVac, removeVac, addNew
         Update Vacation
       </button>
     ) : (
-      <button className="btn btn-primary m-3" onClick={() => addNewVac()}>
+      <button className="btn btn-secondary m-3" onClick={() => addNewVac()}>
         Add New Vacation
       </button>
     );

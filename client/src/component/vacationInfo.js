@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import { Route, Redirect } from "react-router-dom";
-
 import * as Api from "../api/apiCalls";
-
 import * as GetAllVacations from "../getAllVacations/getAllVacation";
 import socketIOClient from "socket.io-client";
 import { connect } from "react-redux";
@@ -177,10 +175,10 @@ class VacationsInfo extends Component {
             <Redirect to="/signsForms/logIn" />;
           </Route>
         ) : (
-          <div className="container ">
+          <div className="  vacInfoCon vacBg">
             <div className="row ">
               <div className="col-4  p-5">
-                <h3>Hello {this.props.user[0].name}😊</h3>
+                <h3 className="RalewayFont">Welcome {this.props.user[0].name}😊</h3>
               </div>
               <div className="col-4"></div>
             </div>
@@ -189,11 +187,15 @@ class VacationsInfo extends Component {
               <div className="col-4">{this.props.user[0].isAdmin === 0 ? "" : !this.props.newVac ? "" : <VacationFrom type={0} addNewVac={this.addNewVac} vacation={this.currentVacation} onChangeFn={this.onChangeFn}></VacationFrom>}</div>
               <div className="col-4"></div>
             </div>
-            <div className="row p-3 vacInfoConImg">
+            <div className="row mx-5 px-5">
               {this.props.vacations.map((vacation) => {
                 // console.log(vacation.initialDate, vacation.finalDate);
                 return (
-                  <div className="relativePos cardSize p-3 m-4 col-xl-4 col-md-6 col-sm-6">
+                  <div
+                    className=" 
+                     col-sm-12 col-md-6 col-xl-3 p-3
+"
+                  >
                     <VacationCards user={this.props.user[0]} addVacToFavoritesFN={this.addVacToFavoritesFN} vacation={vacation} removeVac={this.removeVac} onChangeFn={this.onChangeFn} updateVac={this.updateVac} editVac={this.editVac}></VacationCards>
                   </div>
                 );

@@ -21,7 +21,7 @@ function App() {
     <Provider store={store}>
       <BrowserRouter>
         <Nav></Nav>
-        <div className="App ">
+        <div className="App">
           {/* <Route path="/" component={Home} /> */}
           <Route path="/vacations" component={VacationsInfo} />
           <Route path="/signsForms/logIn" exact component={PasswordField} />

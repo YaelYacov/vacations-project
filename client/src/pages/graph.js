@@ -50,9 +50,9 @@ class GraphComp extends Component {
 
   render() {
     return (
-      <div>
-        <div className="header">
-          <h1 className="title">Horizontal Bar Chart</h1>
+      <div className="vacInfoCon pb-5">
+        <div className="header pb-3">
+          <h1 className="title RalewayFont fontSize pt-4">Vacation Followers</h1>
           {this.props.user.length === 0 ? (
             <Route path="/followersGraph">
               <Redirect to="/signsForms/logIn" />;
@@ -61,8 +61,8 @@ class GraphComp extends Component {
             ""
           )}
         </div>
-        <div className="row  m-lg-2 p-5">
-          <div className="col-lg-12 w-75 m-lg-12">
+        <div className="row mx-auto ">
+          <div className=" mx-auto col-lg-12 w-75 m-lg-12">
             <Bar data={this.data} options={this.options} />
           </div>
         </div>

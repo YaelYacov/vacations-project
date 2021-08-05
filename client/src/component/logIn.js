@@ -1,7 +1,7 @@
 const LogIn = ({ onSubmitFn, onChangeFn }) => {
   return (
     <div className="row  pt-5">
-      <div className="relativePos col-xl-12  p-5 ">
+      <div className="relativePos  col-xl-12  p-5 ">
         <div className="row">
           <h1 className="">Log In</h1>
         </div>
