@@ -182,7 +182,7 @@ class VacationsInfo extends Component {
             </div>
             <div className="row">
               <div className="col-4"></div>
-              <div className="col-4">{this.props.user[0].isAdmin === 0 ? "" : !this.props.newVac ? "" : <VacationFrom type={0} addNewVac={this.addNewVac} vacation={this.currentVacation} onChangeFn={this.onChangeFn}></VacationFrom>}</div>
+              <div className="col-4 ">{this.props.user[0].isAdmin === 0 ? "" : !this.props.newVac ? "" : <VacationFrom type={0} addNewVac={this.addNewVac} vacation={this.currentVacation} onChangeFn={this.onChangeFn}></VacationFrom>}</div>
               <div className="col-4"></div>
             </div>
             <div className="row mx-5 px-5">
