@@ -2,17 +2,14 @@ import React, { Component } from "react";
 import * as GetAllVacations from "../getAllVacations/getAllVacation";
 import { connect } from "react-redux";
 import { Route, Redirect } from "react-router-dom";
-import socketIOClient from "socket.io-client";
+
 import { Bar } from "react-chartjs-2";
 
 class GraphComp extends Component {
-  componentDidMount = () => {
-    console.log(window.location.pathname);
-  };
+  componentDidMount = () => {};
 
   getData = async () => {
     let getAllVacations = await GetAllVacations.getData();
-    console.log(getAllVacations.data);
     this.props.updateVacations([...getAllVacations.data]);
   };
 

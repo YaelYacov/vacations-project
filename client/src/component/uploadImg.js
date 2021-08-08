@@ -20,7 +20,6 @@ class UploadImg extends Component {
     if (files) {
       for (let i = 0; i < files.length; i++) {
         formData.append("uploads[]", files[i], files[i]["name"]);
-        // console.log(formData);
       }
     }
     let res = await Api.postRequest("/upload", formData);
@@ -33,7 +32,6 @@ class UploadImg extends Component {
         await Api.postRequest(`/vacations/updateImg`, { img: `http://www.localhost:5292/${res.data[0].filename}`, id: this.props.currentVacId });
         let getAllVacations = await GetAllVacations.getData();
         if (getAllVacations) {
-          console.log(getAllVacations);
           this.props.updateVacations([...getAllVacations.data]);
         }
       } else {

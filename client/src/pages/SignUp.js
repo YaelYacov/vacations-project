@@ -49,26 +49,26 @@ class SignUp extends Component {
           <div className="col-3"></div>
           <div className="col-6 pt-5">
             <div className="row pt-5">
-              <h1 className="relativePos">Sign Up</h1>
+              <h1 className="relativePos colorWhite">Sign Up</h1>
             </div>
-            <div className=" opacity p-5 ">
-              <div className="row">
+            <div className=" relativePos p-5 ">
+              <div className="row w-75 mx-auto">
                 <div className="form-group inputTXT">
                   <input type="text" className="form-control mt-2 hoverBorder" id="name" onChange={(e) => this.onChangeFN(e)} placeholder="Please Enter Full Name" />
                 </div>
               </div>
 
-              <div className="row">
+              <div className="row w-75 mx-auto">
                 <div className="form-group ">
                   <input type="text" className="form-control mt-2 hoverBorder" id="password" onChange={(e) => this.onChangeFN(e)} placeholder="Please Enter Password" />
                 </div>
               </div>
-              <div className="row">
+              <div className="row w-75 mx-auto">
                 <div className="form-group inputTXT">
                   <input type="text" className="form-control mt-2 hoverBorder" id="mail" onChange={(e) => this.onChangeFN(e)} placeholder="Please Enter Mail" />
                 </div>
 
-                <button className="btn btn-dark mt-3 hoverBorder" onClick={() => this.onSubmit()}>
+                <button className="btn btn-light mt-3 hoverBorder w-25 mx-auto" onClick={() => this.onSubmit()}>
                   Submit
                 </button>
               </div>
