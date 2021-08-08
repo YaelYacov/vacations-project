@@ -11,7 +11,7 @@ const VacationCards = ({ vacation, addVacToFavoritesFN, editVac, removeVac, onCh
   } else ifLikedClass = "fab fa-gratipay float-start m-3";
 
   return (
-    <div className="card cardShadow cardHeight">
+    <div className={vacation.isEditVac ? "card cardShadow formHeight" : "card cardShadow cardHeight"}>
       {!vacation.isEditVac ? (
         <div>
           <div className="row">

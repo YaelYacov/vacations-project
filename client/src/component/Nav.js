@@ -53,13 +53,13 @@ class Nav extends Component {
                         Followers Graph
                       </Link>
                     </li>
-                  ) : this.props.isLoggedIn ? (
+                  ) : this.props.isLoggedIn && this.props.user[0].isAdmin === 1 ? (
                     <Link className="navLink nav-link" to="/vacations" onClick={() => this.pathName()}>
                       Vacations
                     </Link>
                   ) : null}
 
-                  {this.props.isLoggedIn && !this.state.isAdminAndVacPath ? (
+                  {this.props.isLoggedIn && !this.state.isAdminAndVacPath && this.props.user[0].isAdmin === 1 ? (
                     <li className="nav-item mt-2 mx-2">
                       <a className="aStyle navLink " aria-current="page" onClick={() => this.addNewVacBtn()}>
                         {!this.props.newVac ? "Add New Vacation" : "Close New Vacation Form"}
